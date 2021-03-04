@@ -38,7 +38,7 @@ function get_valid_bishop_spot (piece: Sprite) {
     return local_valid_spots
 }
 function get_valid_spots (piece: Sprite) {
-    return get_valid_king_spot(piece)
+    return get_valid_queen_spot(piece)
 }
 function make_pieces () {
     for (let location of tiles.getTilesByType(assets.tile`white_rook_tile`)) {
@@ -85,7 +85,7 @@ controller.A.onEvent(ControllerButtonEvent.Pressed, function () {
             sprite_selected_piece = pieces_clicked[0]
             valid_spots = get_valid_spots(sprite_selected_piece)
             for (let location of valid_spots) {
-                if (within(tiles.locationXY(location, tiles.XY.row), 2, 8, true) && within(tiles.locationXY(location, tiles.XY.column), 2, 9, true)) {
+                if (within(tiles.locationXY(location, tiles.XY.row), 1, 8, true) && within(tiles.locationXY(location, tiles.XY.column), 2, 9, true)) {
                     tiles.setTileAt(location, assets.tile`green_tile`)
                 }
             }
@@ -179,6 +179,50 @@ function get_valid_rook_spot (piece: Sprite) {
     }
     for (let index = 0; index <= 7; index++) {
         if (!(check_location(piece, index + 1, 0))) {
+            break;
+        }
+    }
+    return local_valid_spots
+}
+function get_valid_queen_spot (piece: Sprite) {
+    local_valid_spots = []
+    for (let index = 0; index <= 7; index++) {
+        if (!(check_location(piece, 0, (index + 1) * -1))) {
+            break;
+        }
+    }
+    for (let index = 0; index <= 7; index++) {
+        if (!(check_location(piece, 0, index + 1))) {
+            break;
+        }
+    }
+    for (let index = 0; index <= 7; index++) {
+        if (!(check_location(piece, (index + 1) * -1, 0))) {
+            break;
+        }
+    }
+    for (let index = 0; index <= 7; index++) {
+        if (!(check_location(piece, index + 1, 0))) {
+            break;
+        }
+    }
+    for (let index = 0; index <= 7; index++) {
+        if (!(check_location(piece, (index + 1) * -1, (index + 1) * -1))) {
+            break;
+        }
+    }
+    for (let index = 0; index <= 7; index++) {
+        if (!(check_location(piece, index + 1, index + 1))) {
+            break;
+        }
+    }
+    for (let index = 0; index <= 7; index++) {
+        if (!(check_location(piece, (index + 1) * -1, index + 1))) {
+            break;
+        }
+    }
+    for (let index = 0; index <= 7; index++) {
+        if (!(check_location(piece, index + 1, (index + 1) * -1))) {
             break;
         }
     }
