@@ -13,6 +13,19 @@ function check_location (piece: Sprite, d_col: number, d_row: number) {
         return false
     }
 }
+function get_valid_pawn_spot (piece: Sprite) {
+    local_valid_spots = []
+    if (sprites.readDataBoolean(piece, "color")) {
+        if (grid.getSprites(tiles.getTileLocation(grid.spriteCol(piece), grid.spriteRow(piece) + 1)).length == 0) {
+            local_valid_spots.push(grid.add(grid.getLocation(piece), 0, 1))
+        }
+    } else {
+        if (grid.getSprites(tiles.getTileLocation(grid.spriteCol(piece), grid.spriteRow(piece) - 1)).length == 0) {
+            local_valid_spots.push(grid.add(grid.getLocation(piece), 0, -1))
+        }
+    }
+    return local_valid_spots
+}
 function get_valid_bishop_spot (piece: Sprite) {
     local_valid_spots = []
     for (let index = 0; index <= 7; index++) {
@@ -38,7 +51,7 @@ function get_valid_bishop_spot (piece: Sprite) {
     return local_valid_spots
 }
 function get_valid_spots (piece: Sprite) {
-    return get_valid_queen_spot(piece)
+    return get_valid_pawn_spot(piece)
 }
 function make_pieces () {
     for (let location of tiles.getTilesByType(assets.tile`white_rook_tile`)) {
