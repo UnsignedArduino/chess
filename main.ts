@@ -19,9 +19,25 @@ function get_valid_pawn_spot (piece: Sprite) {
         if (grid.getSprites(tiles.getTileLocation(grid.spriteCol(piece), grid.spriteRow(piece) + 1)).length == 0) {
             local_valid_spots.push(grid.add(grid.getLocation(piece), 0, 1))
         }
+        local_other_piece = grid.getSprites(tiles.getTileLocation(grid.spriteCol(piece) - 1, grid.spriteRow(piece) + 1))
+        if (local_other_piece.length > 0 && !(sprites.readDataBoolean(local_other_piece[0], "color"))) {
+            local_valid_spots.push(grid.add(grid.getLocation(piece), -1, 1))
+        }
+        local_other_piece = grid.getSprites(tiles.getTileLocation(grid.spriteCol(piece) + 1, grid.spriteRow(piece) + 1))
+        if (local_other_piece.length > 0 && !(sprites.readDataBoolean(local_other_piece[0], "color"))) {
+            local_valid_spots.push(grid.add(grid.getLocation(piece), 1, 1))
+        }
     } else {
         if (grid.getSprites(tiles.getTileLocation(grid.spriteCol(piece), grid.spriteRow(piece) - 1)).length == 0) {
             local_valid_spots.push(grid.add(grid.getLocation(piece), 0, -1))
+        }
+        local_other_piece = grid.getSprites(tiles.getTileLocation(grid.spriteCol(piece) - 1, grid.spriteRow(piece) - 1))
+        if (local_other_piece.length > 0 && sprites.readDataBoolean(local_other_piece[0], "color")) {
+            local_valid_spots.push(grid.add(grid.getLocation(piece), -1, -1))
+        }
+        local_other_piece = grid.getSprites(tiles.getTileLocation(grid.spriteCol(piece) + 1, grid.spriteRow(piece) - 1))
+        if (local_other_piece.length > 0 && sprites.readDataBoolean(local_other_piece[0], "color")) {
+            local_valid_spots.push(grid.add(grid.getLocation(piece), 1, -1))
         }
     }
     return local_valid_spots
@@ -249,6 +265,7 @@ function make_piece (sprite: Sprite, col: number, row: number, _type: string, co
 let sprite_cursor: Sprite = null
 let sprite_cursor_pointer: Sprite = null
 let pieces_clicked: Sprite[] = []
+let local_other_piece: Sprite[] = []
 let local_valid_spots: tiles.Location[] = []
 let local_location: tiles.Location = null
 let valid_spots: tiles.Location[] = []
