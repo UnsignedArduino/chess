@@ -13,8 +13,32 @@ function check_location (piece: Sprite, d_col: number, d_row: number) {
         return false
     }
 }
+function get_valid_bishop_spot (piece: Sprite) {
+    local_valid_spots = []
+    for (let index = 0; index <= 7; index++) {
+        if (!(check_location(piece, (index + 1) * -1, (index + 1) * -1))) {
+            break;
+        }
+    }
+    for (let index = 0; index <= 7; index++) {
+        if (!(check_location(piece, index + 1, index + 1))) {
+            break;
+        }
+    }
+    for (let index = 0; index <= 7; index++) {
+        if (!(check_location(piece, (index + 1) * -1, index + 1))) {
+            break;
+        }
+    }
+    for (let index = 0; index <= 7; index++) {
+        if (!(check_location(piece, index + 1, (index + 1) * -1))) {
+            break;
+        }
+    }
+    return local_valid_spots
+}
 function get_valid_spots (piece: Sprite) {
-    return get_valid_rook_spot(piece)
+    return get_valid_bishop_spot(piece)
 }
 function make_pieces () {
     for (let location of tiles.getTilesByType(assets.tile`white_rook_tile`)) {
