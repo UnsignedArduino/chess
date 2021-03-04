@@ -22,6 +22,10 @@ f . . . f 1 f . . .
 . . . . . f 1 f . . 
 . . . . . . f . . . 
 `;
+            case "image2":
+            case "cursor_pointer":return img`
+f 
+`;
         }
         return null;
     })
