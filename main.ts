@@ -61,18 +61,20 @@ controller.A.onEvent(ControllerButtonEvent.Pressed, function () {
             sprite_selected_piece = pieces_clicked[0]
             valid_spots = get_valid_spots(sprite_selected_piece)
             for (let location of valid_spots) {
-                tiles.setTileAt(location, assets.tile`green_tile`)
+                if (within(tiles.locationXY(location, tiles.XY.row), 2, 8, true) && within(tiles.locationXY(location, tiles.XY.column), 2, 9, true)) {
+                    tiles.setTileAt(location, assets.tile`green_tile`)
+                }
             }
             selected_piece = true
         }
     } else {
         if (sprite_selected_piece) {
-            make_tilemap(false)
-            if (sprite_cursor_pointer.tileKindAt(TileDirection.Center, assets.tile`green_tile`)) {
+            if (tiles.tileIs(tiles.locationOfSprite(sprite_cursor_pointer), assets.tile`green_tile`)) {
                 grid.place(sprite_selected_piece, tiles.locationOfSprite(sprite_cursor_pointer))
             } else {
                 scene.cameraShake(4, 200)
             }
+            make_tilemap(false)
         }
         selected_piece = false
     }
@@ -91,6 +93,13 @@ function make_tilemap (with_piece_tiles: boolean) {
         tiles.setSmallTilemap(tilemap`board_with_tile_pieces`)
     } else {
         tiles.setSmallTilemap(tilemap`board`)
+    }
+}
+function within (x: number, minimum: number, maximum: number, inclusive: boolean) {
+    if (inclusive) {
+        return x >= minimum && x <= maximum
+    } else {
+        return x > minimum && x < maximum
     }
 }
 function enable_cursor (enable: boolean) {
@@ -146,6 +155,7 @@ scene.setBackgroundColor(13)
 make_tilemap(true)
 make_pieces()
 make_tilemap(false)
+spriteutils.setConsoleOverlay(true)
 game.onUpdate(function () {
     sprite_cursor.top = sprite_cursor_pointer.top
     sprite_cursor.left = sprite_cursor_pointer.left
