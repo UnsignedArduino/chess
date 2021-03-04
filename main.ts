@@ -1,39 +1,42 @@
+namespace SpriteKind {
+    export const Piece = SpriteKind.create()
+}
 function make_pieces () {
     for (let location of tiles.getTilesByType(assets.tile`white_rook_tile`)) {
-    	
+        make_piece(sprites.create(assets.image`white_rook`, SpriteKind.Piece), tiles.locationXY(location, tiles.XY.column), tiles.locationXY(location, tiles.XY.row), "rook", false)
     }
     for (let location of tiles.getTilesByType(assets.tile`white_knight_tile`)) {
-    	
+        make_piece(sprites.create(assets.image`white_knigh`, SpriteKind.Piece), tiles.locationXY(location, tiles.XY.column), tiles.locationXY(location, tiles.XY.row), "knight", false)
     }
     for (let location of tiles.getTilesByType(assets.tile`white_bishop_tile`)) {
-    	
+        make_piece(sprites.create(assets.image`white_bishop`, SpriteKind.Piece), tiles.locationXY(location, tiles.XY.column), tiles.locationXY(location, tiles.XY.row), "bishop", false)
     }
     for (let location of tiles.getTilesByType(assets.tile`white_king_tile`)) {
-    	
+        make_piece(sprites.create(assets.image`white_king`, SpriteKind.Piece), tiles.locationXY(location, tiles.XY.column), tiles.locationXY(location, tiles.XY.row), "king", false)
     }
     for (let location of tiles.getTilesByType(assets.tile`white_queen_tile`)) {
-    	
+        make_piece(sprites.create(assets.image`white_queen`, SpriteKind.Piece), tiles.locationXY(location, tiles.XY.column), tiles.locationXY(location, tiles.XY.row), "queen", false)
     }
     for (let location of tiles.getTilesByType(assets.tile`white_pawn_tile`)) {
-    	
+        make_piece(sprites.create(assets.image`white_pawn`, SpriteKind.Piece), tiles.locationXY(location, tiles.XY.column), tiles.locationXY(location, tiles.XY.row), "pawn", false)
     }
     for (let location of tiles.getTilesByType(assets.tile`black_rook_tile`)) {
-    	
+        make_piece(sprites.create(assets.image`black_rook`, SpriteKind.Piece), tiles.locationXY(location, tiles.XY.column), tiles.locationXY(location, tiles.XY.row), "rook", true)
     }
     for (let location of tiles.getTilesByType(assets.tile`black_knight_tile`)) {
-    	
+        make_piece(sprites.create(assets.image`black_knight`, SpriteKind.Piece), tiles.locationXY(location, tiles.XY.column), tiles.locationXY(location, tiles.XY.row), "knight", true)
     }
     for (let location of tiles.getTilesByType(assets.tile`black_bishop_tile`)) {
-    	
+        make_piece(sprites.create(assets.image`black_bishop`, SpriteKind.Piece), tiles.locationXY(location, tiles.XY.column), tiles.locationXY(location, tiles.XY.row), "bishop", true)
     }
     for (let location of tiles.getTilesByType(assets.tile`black_king_tile`)) {
-    	
+        make_piece(sprites.create(assets.image`black_king`, SpriteKind.Piece), tiles.locationXY(location, tiles.XY.column), tiles.locationXY(location, tiles.XY.row), "king", true)
     }
     for (let location of tiles.getTilesByType(assets.tile`black_queen_tile`)) {
-    	
+        make_piece(sprites.create(assets.image`black_queen`, SpriteKind.Piece), tiles.locationXY(location, tiles.XY.column), tiles.locationXY(location, tiles.XY.row), "queen", true)
     }
     for (let location of tiles.getTilesByType(assets.tile`black_pawn_tile`)) {
-    	
+        make_piece(sprites.create(assets.image`black_pawn`, SpriteKind.Piece), tiles.locationXY(location, tiles.XY.column), tiles.locationXY(location, tiles.XY.row), "pawn", true)
     }
 }
 function make_cursor () {
@@ -69,6 +72,7 @@ let sprite_cursor: Sprite = null
 make_cursor()
 scene.setBackgroundColor(13)
 make_tilemap(true)
+make_pieces()
 make_tilemap(false)
 game.onUpdate(function () {
     sprite_cursor.top = sprite_cursor_pointer.top

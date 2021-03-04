@@ -26,72 +26,6 @@ f . . . f 1 f . . .
             case "cursor_pointer":return img`
 f 
 `;
-            case "image3":
-            case "black_rook":return img`
-f f . f f . f f 
-f f . f f . f f 
-f f f f f f f f 
-f f f f f f f f 
-. f f f f f f . 
-. . f f f f . . 
-. . f f f f . . 
-. f f f f f f . 
-`;
-            case "image4":
-            case "black_knight":return img`
-. . f f f f . . 
-. f f f f f f . 
-f f f f f f f . 
-. . f f f f f f 
-. . . f f f f f 
-. . f f f f f . 
-. f f f f f f . 
-f f f f f f f f 
-`;
-            case "image5":
-            case "black_bishop":return img`
-. . . f f . . . 
-. . f f f f . . 
-. . f f . . . . 
-. . f f . f . . 
-. . f f f f . . 
-. . f f f f . . 
-. f f f f f f . 
-f f f f f f f f 
-`;
-            case "image7":
-            case "black_queen":return img`
-. . . f f . . . 
-. . . . . . . . 
-f . . f f . . f 
-f f . f f . f f 
-f f f f f f f f 
-. f f f f f f . 
-. . f f f f . . 
-. f f f f f f . 
-`;
-            case "image6":
-            case "black_king":return img`
-. . . f f . . . 
-. . . . . . . . 
-. f f . . f f . 
-f . . f f . . f 
-f f . f f . f f 
-. f f f f f f . 
-. . f f f f . . 
-. f f f f f f . 
-`;
-            case "image8":
-            case "black_pawn":return img`
-. . . . . . . . 
-. . . f f . . . 
-. . f f f f . . 
-. . . f f . . . 
-. . f f f f . . 
-. . . f f . . . 
-. . f f f f . . 
-. f f f f f f . 
-`;
             case "image9":
             case "white_rook":return img`
 1 1 . 1 1 . 1 1 
@@ -157,6 +91,72 @@ f f . f f . f f
 . . . 1 1 . . . 
 . . 1 1 1 1 . . 
 . 1 1 1 1 1 1 . 
+`;
+            case "image3":
+            case "black_rook":return img`
+f f . f f . f f 
+f f . f f . f f 
+f f f f f f f f 
+f f f f f f f f 
+. f f f f f f . 
+. . f f f f . . 
+. . f f f f . . 
+. f f f f f f . 
+`;
+            case "image4":
+            case "black_knight":return img`
+. . f f f f . . 
+. f f f f f f . 
+f f f f f f f . 
+. . f f f f f f 
+. . . f f f f f 
+. . f f f f f . 
+. f f f f f f . 
+f f f f f f f f 
+`;
+            case "image5":
+            case "black_bishop":return img`
+. . . f f . . . 
+. . f f f f . . 
+. . f f . . . . 
+. . f f . f . . 
+. . f f f f . . 
+. . f f f f . . 
+. f f f f f f . 
+f f f f f f f f 
+`;
+            case "image6":
+            case "black_king":return img`
+. . . f f . . . 
+. . . . . . . . 
+. f f . . f f . 
+f . . f f . . f 
+f f . f f . f f 
+. f f f f f f . 
+. . f f f f . . 
+. f f f f f f . 
+`;
+            case "image7":
+            case "black_queen":return img`
+. . . f f . . . 
+. . . . . . . . 
+f . . f f . . f 
+f f . f f . f f 
+f f f f f f f f 
+. f f f f f f . 
+. . f f f f . . 
+. f f f f f f . 
+`;
+            case "image8":
+            case "black_pawn":return img`
+. . . . . . . . 
+. . . f f . . . 
+. . f f f f . . 
+. . . f f . . . 
+. . f f f f . . 
+. . . f f . . . 
+. . f f f f . . 
+. f f f f f f . 
 `;
         }
         return null;

@@ -9,36 +9,6 @@
         "mimeType": "image/x-mkcd-f4",
         "displayName": "cursor_pointer"
     },
-    "image3": {
-        "data": "hwQIAAgAAAD//wAA//8P8AD//////////////wD//////w/w//8AAA==",
-        "mimeType": "image/x-mkcd-f4",
-        "displayName": "black_rook"
-    },
-    "image4": {
-        "data": "hwQIAAgAAAAADwDw8A8A////8P/////////////////w////APAP8A==",
-        "mimeType": "image/x-mkcd-f4",
-        "displayName": "black_knight"
-    },
-    "image5": {
-        "data": "hwQIAAgAAAAAAADwAAAA//D//////////wD///Dw//8AAAD/AAAA8A==",
-        "mimeType": "image/x-mkcd-f4",
-        "displayName": "black_bishop"
-    },
-    "image7": {
-        "data": "hwQIAAgAAAAA/w8AAPD/8AAA//8P////D////wAA//8A8P/wAP8PAA==",
-        "mimeType": "image/x-mkcd-f4",
-        "displayName": "black_queen"
-    },
-    "image6": {
-        "data": "hwQIAAgAAAAA8A8AAA//8AAP8P8P8P//D/D//wAP8P8AD//wAPAPAA==",
-        "mimeType": "image/x-mkcd-f4",
-        "displayName": "black_king"
-    },
-    "image8": {
-        "data": "hwQIAAgAAAAAAAAAAAAA8AAPD//w////8P///wAPD/8AAADwAAAAAA==",
-        "mimeType": "image/x-mkcd-f4",
-        "displayName": "black_pawn"
-    },
     "image9": {
         "data": "hwQIAAgAAAAREQAAEREBEAAREREREREREREREQAREREREQEQEREAAA==",
         "mimeType": "image/x-mkcd-f4",
@@ -68,6 +38,36 @@
         "data": "hwQIAAgAAAAAAAAAAAAAEAABAREQEREREBEREQABAREAAAAQAAAAAA==",
         "mimeType": "image/x-mkcd-f4",
         "displayName": "white_pawn"
+    },
+    "image3": {
+        "data": "hwQIAAgAAAD//wAA//8P8AD//////////////wD//////w/w//8AAA==",
+        "mimeType": "image/x-mkcd-f4",
+        "displayName": "black_rook"
+    },
+    "image4": {
+        "data": "hwQIAAgAAAAADwDw8A8A////8P/////////////////w////APAP8A==",
+        "mimeType": "image/x-mkcd-f4",
+        "displayName": "black_knight"
+    },
+    "image5": {
+        "data": "hwQIAAgAAAAAAADwAAAA//D//////////wD///Dw//8AAAD/AAAA8A==",
+        "mimeType": "image/x-mkcd-f4",
+        "displayName": "black_bishop"
+    },
+    "image6": {
+        "data": "hwQIAAgAAAAA8A8AAA//8AAP8P8P8P//D/D//wAP8P8AD//wAPAPAA==",
+        "mimeType": "image/x-mkcd-f4",
+        "displayName": "black_king"
+    },
+    "image7": {
+        "data": "hwQIAAgAAAAA/w8AAPD/8AAA//8P////D////wAA//8A8P/wAP8PAA==",
+        "mimeType": "image/x-mkcd-f4",
+        "displayName": "black_queen"
+    },
+    "image8": {
+        "data": "hwQIAAgAAAAAAAAAAAAA8AAPD//w////8P///wAPD/8AAADwAAAAAA==",
+        "mimeType": "image/x-mkcd-f4",
+        "displayName": "black_pawn"
     },
     "*": {
         "mimeType": "image/x-mkcd-f4",
