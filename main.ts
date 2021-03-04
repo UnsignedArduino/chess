@@ -67,7 +67,19 @@ function get_valid_bishop_spot (piece: Sprite) {
     return local_valid_spots
 }
 function get_valid_spots (piece: Sprite) {
-    return get_valid_pawn_spot(piece)
+    if (sprites.readDataString(piece, "type") == "rook") {
+        return get_valid_rook_spot(piece)
+    } else if (sprites.readDataString(piece, "type") == "knight") {
+        return get_valid_knight_spot(piece)
+    } else if (sprites.readDataString(piece, "type") == "bishop") {
+        return get_valid_bishop_spot(piece)
+    } else if (sprites.readDataString(piece, "type") == "king") {
+        return get_valid_king_spot(piece)
+    } else if (sprites.readDataString(piece, "type") == "queen") {
+        return get_valid_queen_spot(piece)
+    } else {
+        return get_valid_pawn_spot(piece)
+    }
 }
 function make_pieces () {
     for (let location of tiles.getTilesByType(assets.tile`white_rook_tile`)) {
@@ -170,7 +182,7 @@ function get_valid_king_spot (piece: Sprite) {
 }
 function make_tilemap (with_piece_tiles: boolean) {
     if (with_piece_tiles) {
-        tiles.setSmallTilemap(tilemap`board_for_test`)
+        tiles.setSmallTilemap(tilemap`board_with_tile_pieces`)
     } else {
         tiles.setSmallTilemap(tilemap`board`)
     }
@@ -271,7 +283,6 @@ let local_location: tiles.Location = null
 let valid_spots: tiles.Location[] = []
 let sprite_selected_piece: Sprite = null
 let selected_piece = false
-let debug = true
 selected_piece = false
 sprite_selected_piece = null
 valid_spots = []

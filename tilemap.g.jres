@@ -110,6 +110,30 @@
         ],
         "displayName": "board"
     },
+    "board1": {
+        "id": "board1",
+        "mimeType": "application/mkcd-tilemap",
+        "data": "MDgxNDAwMGYwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDIwMTAyMDEwMjAxMDIwMTAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAxMDIwMTAyMDEwMjAxMDIwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMjAxMDQwMTAyMDEwMjAxMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDEwMjAxMDIwNDAyMDEwMjAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAyMDEwMjAzMDIwMTAyMDEwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMTAyMDEwMjAxMDMwMTAyMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDIwMTAyMDEwMjAxMDIwMTAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAxMDIwMTAyMDEwMjAxMDIwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMA==",
+        "tileset": [
+            "myTiles.transparency8",
+            "myTiles.tile1",
+            "myTiles.tile3",
+            "myTiles.tile8",
+            "myTiles.tile14",
+            "myTiles.tile2",
+            "myTiles.tile4",
+            "myTiles.tile5",
+            "myTiles.tile6",
+            "myTiles.tile7",
+            "myTiles.tile9",
+            "myTiles.tile10",
+            "myTiles.tile11",
+            "myTiles.tile12",
+            "myTiles.tile13",
+            "myTiles.tile15"
+        ],
+        "displayName": "board_for_test"
+    },
     "level2": {
         "id": "level2",
         "mimeType": "application/mkcd-tilemap",
@@ -129,23 +153,9 @@
             "myTiles.tile11",
             "myTiles.tile12",
             "myTiles.tile13",
-            "myTiles.tile14",
-            "myTiles.tile15"
-        ],
-        "displayName": "board_with_tile_pieces"
-    },
-    "board1": {
-        "id": "board1",
-        "mimeType": "application/mkcd-tilemap",
-        "data": "MDgxNDAwMGYwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDIwMTAyMDEwMjAxMDIwMTAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAxMDIwMTAyMDEwMjAxMDIwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMjAxMDQwMTAyMDEwMjAxMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDEwMjAxMDIwNDAyMDEwMjAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAyMDEwMjAzMDIwMTAyMDEwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMTAyMDEwMjAxMDMwMTAyMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDIwMTAyMDEwMjAxMDIwMTAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAxMDIwMTAyMDEwMjAxMDIwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMA==",
-        "tileset": [
-            "myTiles.transparency8",
-            "myTiles.tile1",
-            "myTiles.tile3",
-            "myTiles.tile8",
             "myTiles.tile14"
         ],
-        "displayName": "board_for_test"
+        "displayName": "board_with_tile_pieces"
     },
     "*": {
         "mimeType": "image/x-mkcd-f4",
