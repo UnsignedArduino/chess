@@ -38,7 +38,7 @@ function get_valid_bishop_spot (piece: Sprite) {
     return local_valid_spots
 }
 function get_valid_spots (piece: Sprite) {
-    return get_valid_bishop_spot(piece)
+    return get_valid_king_spot(piece)
 }
 function make_pieces () {
     for (let location of tiles.getTilesByType(assets.tile`white_rook_tile`)) {
@@ -106,6 +106,18 @@ controller.A.onEvent(ControllerButtonEvent.Pressed, function () {
         selected_piece = false
     }
 })
+function get_valid_knight_spot (piece: Sprite) {
+    local_valid_spots = []
+    check_location(piece, 2, 1)
+    check_location(piece, 2, -1)
+    check_location(piece, -2, 1)
+    check_location(piece, -2, -1)
+    check_location(piece, 1, 2)
+    check_location(piece, 1, -2)
+    check_location(piece, -1, 2)
+    check_location(piece, -1, -2)
+    return local_valid_spots
+}
 function make_cursor () {
     sprite_cursor = sprites.create(assets.image`cursor`, SpriteKind.Player)
     sprite_cursor_pointer = sprites.create(assets.image`cursor_pointer`, SpriteKind.Player)
@@ -115,9 +127,21 @@ function make_cursor () {
     scene.cameraFollowSprite(sprite_cursor_pointer)
     enable_cursor(true)
 }
+function get_valid_king_spot (piece: Sprite) {
+    local_valid_spots = []
+    check_location(piece, 0, -1)
+    check_location(piece, 1, -1)
+    check_location(piece, 1, 0)
+    check_location(piece, 1, 1)
+    check_location(piece, 0, 1)
+    check_location(piece, -1, 1)
+    check_location(piece, -1, 0)
+    check_location(piece, -1, -1)
+    return local_valid_spots
+}
 function make_tilemap (with_piece_tiles: boolean) {
     if (with_piece_tiles) {
-        tiles.setSmallTilemap(tilemap`board_with_tile_pieces`)
+        tiles.setSmallTilemap(tilemap`board_for_test`)
     } else {
         tiles.setSmallTilemap(tilemap`board`)
     }
