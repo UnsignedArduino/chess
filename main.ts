@@ -39,6 +39,32 @@ function make_pieces () {
         make_piece(sprites.create(assets.image`black_pawn`, SpriteKind.Piece), tiles.locationXY(location, tiles.XY.column), tiles.locationXY(location, tiles.XY.row), "pawn", true)
     }
 }
+controller.A.onEvent(ControllerButtonEvent.Pressed, function () {
+    if (!(selected_piece)) {
+        pieces_clicked = grid.getSprites(tiles.locationOfSprite(sprite_cursor_pointer))
+        if (pieces_clicked.length > 0) {
+            sprite_selected_piece = pieces_clicked[0]
+            show_valid_spots(sprite_selected_piece)
+        }
+    } else {
+    	
+    }
+})
+function show_valid_spots (piece: Sprite) {
+    if (sprites.readDataString(piece, "type") == "rook") {
+    	
+    } else if (sprites.readDataString(piece, "type") == "knight") {
+    	
+    } else if (sprites.readDataString(piece, "type") == "bishop") {
+    	
+    } else if (sprites.readDataString(piece, "type") == "king") {
+    	
+    } else if (sprites.readDataString(piece, "type") == "queen") {
+    	
+    } else {
+    	
+    }
+}
 function make_cursor () {
     sprite_cursor = sprites.create(assets.image`cursor`, SpriteKind.Player)
     sprite_cursor_pointer = sprites.create(assets.image`cursor_pointer`, SpriteKind.Player)
@@ -67,8 +93,13 @@ function make_piece (sprite: Sprite, col: number, row: number, _type: string, co
     sprites.setDataString(sprite, "type", _type)
     sprites.setDataBoolean(sprite, "color", color)
 }
-let sprite_cursor_pointer: Sprite = null
 let sprite_cursor: Sprite = null
+let sprite_cursor_pointer: Sprite = null
+let pieces_clicked: Sprite[] = []
+let sprite_selected_piece: Sprite = null
+let selected_piece = false
+selected_piece = false
+sprite_selected_piece = null
 make_cursor()
 scene.setBackgroundColor(13)
 make_tilemap(true)
