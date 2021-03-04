@@ -1,6 +1,9 @@
 namespace SpriteKind {
     export const Piece = SpriteKind.create()
 }
+function get_valid_spots (piece: Sprite) {
+    return get_valid_rook_spot(piece)
+}
 function make_pieces () {
     for (let location of tiles.getTilesByType(assets.tile`white_rook_tile`)) {
         make_piece(sprites.create(assets.image`white_rook`, SpriteKind.Piece), tiles.locationXY(location, tiles.XY.column), tiles.locationXY(location, tiles.XY.row), "rook", false)
@@ -44,27 +47,18 @@ controller.A.onEvent(ControllerButtonEvent.Pressed, function () {
         pieces_clicked = grid.getSprites(tiles.locationOfSprite(sprite_cursor_pointer))
         if (pieces_clicked.length > 0) {
             sprite_selected_piece = pieces_clicked[0]
-            show_valid_spots(sprite_selected_piece)
+            valid_spots = get_valid_spots(sprite_selected_piece)
+            selected_piece = true
         }
     } else {
-    	
+        if (sprite_cursor_pointer.tileKindAt(TileDirection.Center, assets.tile`dark_tile`) || sprite_cursor_pointer.tileKindAt(TileDirection.Center, assets.tile`light_tile`)) {
+        	
+        } else {
+            scene.cameraShake(4, 200)
+        }
+        selected_piece = false
     }
 })
-function show_valid_spots (piece: Sprite) {
-    if (sprites.readDataString(piece, "type") == "rook") {
-    	
-    } else if (sprites.readDataString(piece, "type") == "knight") {
-    	
-    } else if (sprites.readDataString(piece, "type") == "bishop") {
-    	
-    } else if (sprites.readDataString(piece, "type") == "king") {
-    	
-    } else if (sprites.readDataString(piece, "type") == "queen") {
-    	
-    } else {
-    	
-    }
-}
 function make_cursor () {
     sprite_cursor = sprites.create(assets.image`cursor`, SpriteKind.Player)
     sprite_cursor_pointer = sprites.create(assets.image`cursor_pointer`, SpriteKind.Player)
@@ -88,18 +82,26 @@ function enable_cursor (enable: boolean) {
         controller.moveSprite(sprite_cursor_pointer, 0, 0)
     }
 }
+function get_valid_rook_spot (piece: Sprite) {
+    local_valid_spots = []
+    return local_valid_spots
+}
 function make_piece (sprite: Sprite, col: number, row: number, _type: string, color: boolean) {
     grid.place(sprite, tiles.getTileLocation(col, row))
     sprites.setDataString(sprite, "type", _type)
     sprites.setDataBoolean(sprite, "color", color)
 }
+let local_valid_spots: number[] = []
 let sprite_cursor: Sprite = null
 let sprite_cursor_pointer: Sprite = null
 let pieces_clicked: Sprite[] = []
+let valid_spots: number[] = []
 let sprite_selected_piece: Sprite = null
 let selected_piece = false
+let debug = true
 selected_piece = false
 sprite_selected_piece = null
+valid_spots = []
 make_cursor()
 scene.setBackgroundColor(13)
 make_tilemap(true)
@@ -108,4 +110,9 @@ make_tilemap(false)
 game.onUpdate(function () {
     sprite_cursor.top = sprite_cursor_pointer.top
     sprite_cursor.left = sprite_cursor_pointer.left
+    if (selected_piece) {
+        sprite_cursor.image.replace(1, 9)
+    } else {
+        sprite_cursor.image.replace(9, 1)
+    }
 })
