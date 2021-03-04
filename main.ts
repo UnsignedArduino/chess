@@ -70,6 +70,9 @@ controller.A.onEvent(ControllerButtonEvent.Pressed, function () {
     } else {
         if (sprite_selected_piece) {
             if (tiles.tileIs(tiles.locationOfSprite(sprite_cursor_pointer), assets.tile`green_tile`)) {
+                if (grid.getSprites(tiles.locationOfSprite(sprite_cursor_pointer)).length > 0) {
+                    grid.getSprites(tiles.locationOfSprite(sprite_cursor_pointer))[0].destroy()
+                }
                 grid.place(sprite_selected_piece, tiles.locationOfSprite(sprite_cursor_pointer))
             } else {
                 scene.cameraShake(4, 200)
