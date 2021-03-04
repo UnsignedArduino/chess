@@ -51,10 +51,12 @@ controller.A.onEvent(ControllerButtonEvent.Pressed, function () {
             selected_piece = true
         }
     } else {
-        if (sprite_cursor_pointer.tileKindAt(TileDirection.Center, assets.tile`dark_tile`) || sprite_cursor_pointer.tileKindAt(TileDirection.Center, assets.tile`light_tile`)) {
-        	
-        } else {
-            scene.cameraShake(4, 200)
+        if (sprite_selected_piece) {
+            if (sprite_cursor_pointer.tileKindAt(TileDirection.Center, assets.tile`dark_tile`) || sprite_cursor_pointer.tileKindAt(TileDirection.Center, assets.tile`light_tile`)) {
+                grid.place(sprite_selected_piece, tiles.locationOfSprite(sprite_cursor_pointer))
+            } else {
+                scene.cameraShake(4, 200)
+            }
         }
         selected_piece = false
     }
