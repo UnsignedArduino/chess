@@ -1,6 +1,18 @@
 namespace SpriteKind {
     export const Piece = SpriteKind.create()
 }
+function check_location (piece: Sprite, d_col: number, d_row: number) {
+    local_location = grid.add(grid.getLocation(piece), d_col, d_row)
+    if (grid.getSprites(local_location).length == 0) {
+        local_valid_spots.push(grid.add(grid.getLocation(piece), d_col, d_row))
+        return true
+    } else if (sprites.readDataBoolean(grid.getSprites(local_location)[0], "color") != sprites.readDataBoolean(piece, "color")) {
+        local_valid_spots.push(grid.add(grid.getLocation(piece), d_col, d_row))
+        return false
+    } else {
+        return false
+    }
+}
 function get_valid_spots (piece: Sprite) {
     return get_valid_rook_spot(piece)
 }
@@ -48,11 +60,15 @@ controller.A.onEvent(ControllerButtonEvent.Pressed, function () {
         if (pieces_clicked.length > 0) {
             sprite_selected_piece = pieces_clicked[0]
             valid_spots = get_valid_spots(sprite_selected_piece)
+            for (let location of valid_spots) {
+                tiles.setTileAt(location, assets.tile`green_tile`)
+            }
             selected_piece = true
         }
     } else {
         if (sprite_selected_piece) {
-            if (sprite_cursor_pointer.tileKindAt(TileDirection.Center, assets.tile`dark_tile`) || sprite_cursor_pointer.tileKindAt(TileDirection.Center, assets.tile`light_tile`)) {
+            make_tilemap(false)
+            if (sprite_cursor_pointer.tileKindAt(TileDirection.Center, assets.tile`green_tile`)) {
                 grid.place(sprite_selected_piece, tiles.locationOfSprite(sprite_cursor_pointer))
             } else {
                 scene.cameraShake(4, 200)
@@ -86,6 +102,26 @@ function enable_cursor (enable: boolean) {
 }
 function get_valid_rook_spot (piece: Sprite) {
     local_valid_spots = []
+    for (let index = 0; index <= 7; index++) {
+        if (!(check_location(piece, 0, (index + 1) * -1))) {
+            break;
+        }
+    }
+    for (let index = 0; index <= 7; index++) {
+        if (!(check_location(piece, 0, index + 1))) {
+            break;
+        }
+    }
+    for (let index = 0; index <= 7; index++) {
+        if (!(check_location(piece, (index + 1) * -1, 0))) {
+            break;
+        }
+    }
+    for (let index = 0; index <= 7; index++) {
+        if (!(check_location(piece, index + 1, 0))) {
+            break;
+        }
+    }
     return local_valid_spots
 }
 function make_piece (sprite: Sprite, col: number, row: number, _type: string, color: boolean) {
@@ -93,11 +129,12 @@ function make_piece (sprite: Sprite, col: number, row: number, _type: string, co
     sprites.setDataString(sprite, "type", _type)
     sprites.setDataBoolean(sprite, "color", color)
 }
-let local_valid_spots: number[] = []
 let sprite_cursor: Sprite = null
 let sprite_cursor_pointer: Sprite = null
 let pieces_clicked: Sprite[] = []
-let valid_spots: number[] = []
+let local_valid_spots: tiles.Location[] = []
+let local_location: tiles.Location = null
+let valid_spots: tiles.Location[] = []
 let sprite_selected_piece: Sprite = null
 let selected_piece = false
 let debug = true
