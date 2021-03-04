@@ -42,6 +42,10 @@ function get_valid_pawn_spot (piece: Sprite) {
     }
     return local_valid_spots
 }
+controller.B.onEvent(ControllerButtonEvent.Pressed, function () {
+    selected_piece = false
+    make_tilemap(false)
+})
 function get_valid_bishop_spot (piece: Sprite) {
     local_valid_spots = []
     for (let index = 0; index <= 7; index++) {
@@ -138,6 +142,7 @@ controller.A.onEvent(ControllerButtonEvent.Pressed, function () {
                 if (grid.getSprites(tiles.locationOfSprite(sprite_cursor_pointer)).length > 0) {
                     grid.getSprites(tiles.locationOfSprite(sprite_cursor_pointer))[0].destroy()
                 }
+                sprites.setDataBoolean(sprite_selected_piece, "moved", true)
                 grid.place(sprite_selected_piece, tiles.locationOfSprite(sprite_cursor_pointer))
             } else {
                 scene.cameraShake(4, 200)
@@ -273,6 +278,7 @@ function make_piece (sprite: Sprite, col: number, row: number, _type: string, co
     grid.place(sprite, tiles.getTileLocation(col, row))
     sprites.setDataString(sprite, "type", _type)
     sprites.setDataBoolean(sprite, "color", color)
+    sprites.setDataBoolean(sprite, "moved", false)
 }
 let sprite_cursor: Sprite = null
 let sprite_cursor_pointer: Sprite = null
