@@ -46,23 +46,33 @@ function prepare_text () {
     sprite_text_player_label = textsprite.create("Player:", 0, 15)
     sprite_text_player_label.top = 16
     sprite_text_player_label.left = 92
+    sprite_text_player_label.setFlag(SpriteFlag.RelativeToCamera, true)
     sprite_text_current_player = textsprite.create("", 0, 15)
     sprite_text_current_player.top = sprite_text_player_label.bottom
     sprite_text_current_player.left = sprite_text_player_label.left + 1
+    sprite_text_current_player.setFlag(SpriteFlag.RelativeToCamera, true)
     sprite_text_white_time_label = textsprite.create(": ", 0, 15)
     sprite_text_white_time_label.top = 34
     sprite_text_white_time_label.left = sprite_text_current_player.left
     sprite_text_white_time_label.setIcon(assets.image`white_knight`)
+    sprite_text_white_time_label.setFlag(SpriteFlag.RelativeToCamera, true)
     sprite_text_white_player_time = textsprite.create("", 0, 15)
     sprite_text_white_player_time.top = 34
     sprite_text_white_player_time.left = sprite_text_white_time_label.right
+    sprite_text_white_player_time.setFlag(SpriteFlag.RelativeToCamera, true)
     sprite_text_black_time_label = textsprite.create(": ", 0, 15)
     sprite_text_black_time_label.top = 44
     sprite_text_black_time_label.left = sprite_text_current_player.left
     sprite_text_black_time_label.setIcon(assets.image`black_knight`)
+    sprite_text_black_time_label.setFlag(SpriteFlag.RelativeToCamera, true)
     sprite_text_player_black_time = textsprite.create("", 0, 15)
     sprite_text_player_black_time.top = 44
     sprite_text_player_black_time.left = sprite_text_black_time_label.right
+    sprite_text_player_black_time.setFlag(SpriteFlag.RelativeToCamera, true)
+    sprite_text_error_message = textsprite.create("", 0, 2)
+    sprite_text_error_message.bottom = scene.screenHeight() - 2
+    sprite_text_error_message.left = 16
+    sprite_text_error_message.setFlag(SpriteFlag.RelativeToCamera, true)
 }
 controller.B.onEvent(ControllerButtonEvent.Pressed, function () {
     if (!(lock_chessboard)) {
@@ -167,6 +177,10 @@ controller.A.onEvent(ControllerButtonEvent.Pressed, function () {
                     selected_piece = true
                 } else {
                     scene.cameraShake(4, 200)
+                    sprite_text_error_message.setText("Not your piece!")
+                    timer.after(2500, function () {
+                        sprite_text_error_message.setText("")
+                    })
                 }
             }
         } else {
@@ -180,6 +194,10 @@ controller.A.onEvent(ControllerButtonEvent.Pressed, function () {
                     active_player = !(active_player)
                 } else {
                     scene.cameraShake(4, 200)
+                    sprite_text_error_message.setText("Not a legal spot!")
+                    timer.after(2500, function () {
+                        sprite_text_error_message.setText("")
+                    })
                 }
                 make_tilemap(false)
             }
@@ -327,6 +345,7 @@ let local_formatted_time = ""
 let sprite_cursor: Sprite = null
 let sprite_cursor_pointer: Sprite = null
 let pieces_clicked: Sprite[] = []
+let sprite_text_error_message: TextSprite = null
 let sprite_text_player_black_time: TextSprite = null
 let sprite_text_black_time_label: TextSprite = null
 let sprite_text_white_player_time: TextSprite = null
@@ -342,8 +361,8 @@ let sprite_selected_piece: Sprite = null
 let selected_piece = false
 let active_player = false
 active_player = false
-let white_player_time = 10
-let black_player_time = 10
+let white_player_time = 100
+let black_player_time = 100
 selected_piece = false
 sprite_selected_piece = null
 valid_spots = []
@@ -414,7 +433,7 @@ forever(function () {
             }
         } else {
             if (white_player_time > 60) {
-                timer.throttle("white_player_time", 100, function () {
+                timer.throttle("white_player_time", 1000, function () {
                     white_player_time += -1
                 })
             } else {
