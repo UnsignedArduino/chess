@@ -49,18 +49,26 @@ function prepare_text () {
     sprite_text_current_player = textsprite.create("", 0, 15)
     sprite_text_current_player.top = sprite_text_player_label.bottom
     sprite_text_current_player.left = sprite_text_player_label.left + 1
+    sprite_text_white_time_label = textsprite.create(": ", 0, 15)
+    sprite_text_white_time_label.top = 34
+    sprite_text_white_time_label.left = sprite_text_current_player.left
+    sprite_text_white_time_label.setIcon(assets.image`white_knight`)
     sprite_text_white_player_time = textsprite.create("", 0, 15)
     sprite_text_white_player_time.top = 34
-    sprite_text_white_player_time.left = sprite_text_current_player.left
-    sprite_text_white_player_time.setIcon(assets.image`white_knight`)
+    sprite_text_white_player_time.left = sprite_text_white_time_label.right
+    sprite_text_black_time_label = textsprite.create(": ", 0, 15)
+    sprite_text_black_time_label.top = 44
+    sprite_text_black_time_label.left = sprite_text_current_player.left
+    sprite_text_black_time_label.setIcon(assets.image`black_knight`)
     sprite_text_player_black_time = textsprite.create("", 0, 15)
     sprite_text_player_black_time.top = 44
-    sprite_text_player_black_time.left = sprite_text_current_player.left
-    sprite_text_player_black_time.setIcon(assets.image`black_knight`)
+    sprite_text_player_black_time.left = sprite_text_black_time_label.right
 }
 controller.B.onEvent(ControllerButtonEvent.Pressed, function () {
-    selected_piece = false
-    make_tilemap(false)
+    if (!(lock_chessboard)) {
+        selected_piece = false
+        make_tilemap(false)
+    }
 })
 function get_valid_bishop_spot (piece: Sprite) {
     local_valid_spots = []
@@ -140,41 +148,43 @@ function make_pieces () {
     }
 }
 controller.A.onEvent(ControllerButtonEvent.Pressed, function () {
-    if (!(selected_piece)) {
-        pieces_clicked = grid.getSprites(tiles.locationOfSprite(sprite_cursor_pointer))
-        if (pieces_clicked.length > 0) {
-            if (sprites.readDataBoolean(pieces_clicked[0], "color") == active_player) {
-                sprite_selected_piece = pieces_clicked[0]
-                valid_spots = get_valid_spots(sprite_selected_piece)
-                for (let location of valid_spots) {
-                    if (within(tiles.locationXY(location, tiles.XY.row), 2, 9, true) && within(tiles.locationXY(location, tiles.XY.column), 2, 9, true)) {
-                        if (tiles.tileAtLocationEquals(location, assets.tile`dark_tile`)) {
-                            tiles.setTileAt(location, assets.tile`green_tile_on_dark`)
-                        } else {
-                            tiles.setTileAt(location, assets.tile`green_tile_on_light`)
+    if (!(lock_chessboard)) {
+        if (!(selected_piece)) {
+            pieces_clicked = grid.getSprites(tiles.locationOfSprite(sprite_cursor_pointer))
+            if (pieces_clicked.length > 0) {
+                if (sprites.readDataBoolean(pieces_clicked[0], "color") == active_player) {
+                    sprite_selected_piece = pieces_clicked[0]
+                    valid_spots = get_valid_spots(sprite_selected_piece)
+                    for (let location of valid_spots) {
+                        if (within(tiles.locationXY(location, tiles.XY.row), 2, 9, true) && within(tiles.locationXY(location, tiles.XY.column), 2, 9, true)) {
+                            if (tiles.tileAtLocationEquals(location, assets.tile`dark_tile`)) {
+                                tiles.setTileAt(location, assets.tile`green_tile_on_dark`)
+                            } else {
+                                tiles.setTileAt(location, assets.tile`green_tile_on_light`)
+                            }
                         }
                     }
+                    selected_piece = true
+                } else {
+                    scene.cameraShake(4, 200)
                 }
-                selected_piece = true
-            } else {
-                scene.cameraShake(4, 200)
             }
-        }
-    } else {
-        if (sprite_selected_piece) {
-            if (tiles.tileIs(tiles.locationOfSprite(sprite_cursor_pointer), assets.tile`green_tile_on_dark`) || tiles.tileIs(tiles.locationOfSprite(sprite_cursor_pointer), assets.tile`green_tile_on_light`)) {
-                if (grid.getSprites(tiles.locationOfSprite(sprite_cursor_pointer)).length > 0) {
-                    grid.getSprites(tiles.locationOfSprite(sprite_cursor_pointer))[0].destroy()
+        } else {
+            if (sprite_selected_piece) {
+                if (tiles.tileIs(tiles.locationOfSprite(sprite_cursor_pointer), assets.tile`green_tile_on_dark`) || tiles.tileIs(tiles.locationOfSprite(sprite_cursor_pointer), assets.tile`green_tile_on_light`)) {
+                    if (grid.getSprites(tiles.locationOfSprite(sprite_cursor_pointer)).length > 0) {
+                        grid.getSprites(tiles.locationOfSprite(sprite_cursor_pointer))[0].destroy()
+                    }
+                    sprites.setDataBoolean(sprite_selected_piece, "moved", true)
+                    grid.place(sprite_selected_piece, tiles.locationOfSprite(sprite_cursor_pointer))
+                    active_player = !(active_player)
+                } else {
+                    scene.cameraShake(4, 200)
                 }
-                sprites.setDataBoolean(sprite_selected_piece, "moved", true)
-                grid.place(sprite_selected_piece, tiles.locationOfSprite(sprite_cursor_pointer))
-                active_player = !(active_player)
-            } else {
-                scene.cameraShake(4, 200)
+                make_tilemap(false)
             }
-            make_tilemap(false)
+            selected_piece = false
         }
-        selected_piece = false
     }
 })
 function get_valid_knight_spot (piece: Sprite) {
@@ -318,22 +328,26 @@ let sprite_cursor: Sprite = null
 let sprite_cursor_pointer: Sprite = null
 let pieces_clicked: Sprite[] = []
 let sprite_text_player_black_time: TextSprite = null
+let sprite_text_black_time_label: TextSprite = null
 let sprite_text_white_player_time: TextSprite = null
+let sprite_text_white_time_label: TextSprite = null
 let sprite_text_current_player: TextSprite = null
 let sprite_text_player_label: TextSprite = null
 let local_other_piece: Sprite[] = []
 let local_valid_spots: tiles.Location[] = []
 let local_location: tiles.Location = null
+let lock_chessboard = false
 let valid_spots: tiles.Location[] = []
 let sprite_selected_piece: Sprite = null
 let selected_piece = false
 let active_player = false
 active_player = false
-let white_player_time = 60
-let black_player_time = 90
+let white_player_time = 10
+let black_player_time = 10
 selected_piece = false
 sprite_selected_piece = null
 valid_spots = []
+lock_chessboard = false
 make_cursor()
 scene.setBackgroundColor(13)
 make_tilemap(true)
@@ -356,30 +370,54 @@ forever(function () {
     } else {
         sprite_text_current_player.setText("White")
     }
-    sprite_text_player_black_time.setText(": " + format_time(black_player_time))
-    sprite_text_white_player_time.setText(": " + format_time(white_player_time))
+    sprite_text_player_black_time.setText(format_time(black_player_time))
+    if (black_player_time < 30) {
+        if (Math.floor(black_player_time) % 2 == 0) {
+            sprite_text_player_black_time.image.replace(15, 4)
+        } else {
+            sprite_text_player_black_time.image.replace(15, 2)
+        }
+    }
+    sprite_text_white_player_time.setText(format_time(white_player_time))
+    if (white_player_time < 30) {
+        if (Math.floor(white_player_time) % 2 == 0) {
+            sprite_text_white_player_time.image.replace(15, 4)
+        } else {
+            sprite_text_white_player_time.image.replace(15, 2)
+        }
+    }
     pause(100)
 })
 forever(function () {
-    if (active_player) {
-        if (black_player_time > 60) {
-            timer.throttle("black_player_time", 1000, function () {
-                black_player_time += -1
-            })
-        } else {
-            timer.throttle("black_player_time", 100, function () {
-                black_player_time = spriteutils.roundWithPrecision(black_player_time - 0.1, 1)
-            })
-        }
+    if (black_player_time <= 0) {
+        black_player_time = 0
+        lock_chessboard = true
+        pause(100)
+    } else if (white_player_time <= 0) {
+        white_player_time = 0
+        lock_chessboard = true
+        pause(100)
     } else {
-        if (white_player_time > 60) {
-            timer.throttle("white_player_time", 100, function () {
-                white_player_time += -1
-            })
+        if (active_player) {
+            if (black_player_time > 60) {
+                timer.throttle("black_player_time", 1000, function () {
+                    black_player_time += -1
+                })
+            } else {
+                timer.throttle("black_player_time", 100, function () {
+                    black_player_time = spriteutils.roundWithPrecision(black_player_time - 0.1, 1)
+                })
+            }
         } else {
-            timer.throttle("white_player_time", 100, function () {
-                white_player_time = spriteutils.roundWithPrecision(white_player_time - 0.1, 1)
-            })
+            if (white_player_time > 60) {
+                timer.throttle("white_player_time", 100, function () {
+                    white_player_time += -1
+                })
+            } else {
+                timer.throttle("white_player_time", 100, function () {
+                    white_player_time = spriteutils.roundWithPrecision(white_player_time - 0.1, 1)
+                })
+            }
         }
     }
 })
