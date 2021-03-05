@@ -365,11 +365,6 @@ game.onUpdate(function () {
     }
 })
 forever(function () {
-    if (active_player) {
-        sprite_text_current_player.setText("Black")
-    } else {
-        sprite_text_current_player.setText("White")
-    }
     sprite_text_player_black_time.setText(format_time(black_player_time))
     if (black_player_time < 30) {
         if (Math.floor(black_player_time) % 2 == 0) {
@@ -392,12 +387,21 @@ forever(function () {
     if (black_player_time <= 0) {
         black_player_time = 0
         lock_chessboard = true
+        sprite_text_player_label.setText("White wins!")
+        sprite_text_current_player.setText("")
         pause(100)
     } else if (white_player_time <= 0) {
         white_player_time = 0
         lock_chessboard = true
+        sprite_text_player_label.setText("Black wins!")
+        sprite_text_current_player.setText("")
         pause(100)
     } else {
+        if (active_player) {
+            sprite_text_current_player.setText("Black")
+        } else {
+            sprite_text_current_player.setText("White")
+        }
         if (active_player) {
             if (black_player_time > 60) {
                 timer.throttle("black_player_time", 1000, function () {
