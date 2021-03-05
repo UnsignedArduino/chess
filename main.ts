@@ -130,7 +130,7 @@ controller.A.onEvent(ControllerButtonEvent.Pressed, function () {
             sprite_selected_piece = pieces_clicked[0]
             valid_spots = get_valid_spots(sprite_selected_piece)
             for (let location of valid_spots) {
-                if (within(tiles.locationXY(location, tiles.XY.row), 1, 8, true) && within(tiles.locationXY(location, tiles.XY.column), 2, 9, true)) {
+                if (within(tiles.locationXY(location, tiles.XY.row), 2, 9, true) && within(tiles.locationXY(location, tiles.XY.column), 2, 9, true)) {
                     if (tiles.tileAtLocationEquals(location, assets.tile`dark_tile`)) {
                         tiles.setTileAt(location, assets.tile`green_tile_on_dark`)
                     } else {
