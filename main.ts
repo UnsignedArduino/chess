@@ -69,14 +69,19 @@ function prepare_text () {
     sprite_text_player_black_time.top = 44
     sprite_text_player_black_time.left = sprite_text_black_time_label.right
     sprite_text_player_black_time.setFlag(SpriteFlag.RelativeToCamera, true)
+    sprite_text_moves_found = textsprite.create("", 0, 15)
+    sprite_text_moves_found.left = 16
+    sprite_text_moves_found.top = 100
+    sprite_text_moves_found.setFlag(SpriteFlag.RelativeToCamera, true)
     sprite_text_error_message = textsprite.create("", 0, 2)
     sprite_text_error_message.bottom = scene.screenHeight() - 2
-    sprite_text_error_message.left = 16
+    sprite_text_error_message.left = 15
     sprite_text_error_message.setFlag(SpriteFlag.RelativeToCamera, true)
 }
 controller.B.onEvent(ControllerButtonEvent.Pressed, function () {
     if (!(lock_chessboard)) {
         selected_piece = false
+        sprite_text_moves_found.setText("")
         make_tilemap(false)
     }
 })
@@ -174,6 +179,10 @@ controller.A.onEvent(ControllerButtonEvent.Pressed, function () {
                             }
                         }
                     }
+                    sprite_text_moves_found.setText("Moves found: " + (tiles.getTilesByType(assets.tile`green_tile_on_dark`).length + tiles.getTilesByType(assets.tile`green_tile_on_light`).length))
+                    if (tiles.getTilesByType(assets.tile`green_tile_on_dark`).length + tiles.getTilesByType(assets.tile`green_tile_on_light`).length == 0) {
+                        sprite_text_moves_found.image.replace(15, 2)
+                    }
                     selected_piece = true
                 } else {
                     scene.cameraShake(4, 200)
@@ -199,6 +208,7 @@ controller.A.onEvent(ControllerButtonEvent.Pressed, function () {
                         sprite_text_error_message.setText("")
                     })
                 }
+                sprite_text_moves_found.setText("")
                 make_tilemap(false)
             }
             selected_piece = false
@@ -346,6 +356,7 @@ let sprite_cursor: Sprite = null
 let sprite_cursor_pointer: Sprite = null
 let pieces_clicked: Sprite[] = []
 let sprite_text_error_message: TextSprite = null
+let sprite_text_moves_found: TextSprite = null
 let sprite_text_player_black_time: TextSprite = null
 let sprite_text_black_time_label: TextSprite = null
 let sprite_text_white_player_time: TextSprite = null
