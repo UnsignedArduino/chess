@@ -127,18 +127,22 @@ controller.A.onEvent(ControllerButtonEvent.Pressed, function () {
     if (!(selected_piece)) {
         pieces_clicked = grid.getSprites(tiles.locationOfSprite(sprite_cursor_pointer))
         if (pieces_clicked.length > 0) {
-            sprite_selected_piece = pieces_clicked[0]
-            valid_spots = get_valid_spots(sprite_selected_piece)
-            for (let location of valid_spots) {
-                if (within(tiles.locationXY(location, tiles.XY.row), 2, 9, true) && within(tiles.locationXY(location, tiles.XY.column), 2, 9, true)) {
-                    if (tiles.tileAtLocationEquals(location, assets.tile`dark_tile`)) {
-                        tiles.setTileAt(location, assets.tile`green_tile_on_dark`)
-                    } else {
-                        tiles.setTileAt(location, assets.tile`green_tile_on_light`)
+            if (sprites.readDataBoolean(pieces_clicked[0], "color") == active_player) {
+                sprite_selected_piece = pieces_clicked[0]
+                valid_spots = get_valid_spots(sprite_selected_piece)
+                for (let location of valid_spots) {
+                    if (within(tiles.locationXY(location, tiles.XY.row), 2, 9, true) && within(tiles.locationXY(location, tiles.XY.column), 2, 9, true)) {
+                        if (tiles.tileAtLocationEquals(location, assets.tile`dark_tile`)) {
+                            tiles.setTileAt(location, assets.tile`green_tile_on_dark`)
+                        } else {
+                            tiles.setTileAt(location, assets.tile`green_tile_on_light`)
+                        }
                     }
                 }
+                selected_piece = true
+            } else {
+                scene.cameraShake(4, 200)
             }
-            selected_piece = true
         }
     } else {
         if (sprite_selected_piece) {
@@ -148,6 +152,7 @@ controller.A.onEvent(ControllerButtonEvent.Pressed, function () {
                 }
                 sprites.setDataBoolean(sprite_selected_piece, "moved", true)
                 grid.place(sprite_selected_piece, tiles.locationOfSprite(sprite_cursor_pointer))
+                active_player = !(active_player)
             } else {
                 scene.cameraShake(4, 200)
             }
@@ -290,12 +295,14 @@ let pieces_clicked: Sprite[] = []
 let local_other_piece: Sprite[] = []
 let local_valid_spots: tiles.Location[] = []
 let local_location: tiles.Location = null
+let active_player = false
 let valid_spots: tiles.Location[] = []
 let sprite_selected_piece: Sprite = null
 let selected_piece = false
 selected_piece = false
 sprite_selected_piece = null
 valid_spots = []
+active_player = false
 make_cursor()
 scene.setBackgroundColor(13)
 make_tilemap(true)
