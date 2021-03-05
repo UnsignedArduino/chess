@@ -368,17 +368,17 @@ forever(function () {
     sprite_text_player_black_time.setText(format_time(black_player_time))
     if (black_player_time < 30) {
         if (Math.floor(black_player_time) % 2 == 0) {
-            sprite_text_player_black_time.image.replace(15, 4)
-        } else {
             sprite_text_player_black_time.image.replace(15, 2)
+        } else {
+            sprite_text_player_black_time.image.replace(15, 4)
         }
     }
     sprite_text_white_player_time.setText(format_time(white_player_time))
     if (white_player_time < 30) {
         if (Math.floor(white_player_time) % 2 == 0) {
-            sprite_text_white_player_time.image.replace(15, 4)
-        } else {
             sprite_text_white_player_time.image.replace(15, 2)
+        } else {
+            sprite_text_white_player_time.image.replace(15, 4)
         }
     }
     pause(100)
