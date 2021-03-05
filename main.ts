@@ -42,6 +42,14 @@ function get_valid_pawn_spot (piece: Sprite) {
     }
     return local_valid_spots
 }
+function prepare_text () {
+    sprite_text_player_label = textsprite.create("Player:", 0, 15)
+    sprite_text_player_label.top = 16
+    sprite_text_player_label.left = 92
+    sprite_text_current_player = textsprite.create("", 0, 15)
+    sprite_text_current_player.top = sprite_text_player_label.bottom
+    sprite_text_current_player.left = sprite_text_player_label.left + 1
+}
 controller.B.onEvent(ControllerButtonEvent.Pressed, function () {
     selected_piece = false
     make_tilemap(false)
@@ -292,22 +300,25 @@ function make_piece (sprite: Sprite, col: number, row: number, _type: string, co
 let sprite_cursor: Sprite = null
 let sprite_cursor_pointer: Sprite = null
 let pieces_clicked: Sprite[] = []
+let sprite_text_current_player: TextSprite = null
+let sprite_text_player_label: TextSprite = null
 let local_other_piece: Sprite[] = []
 let local_valid_spots: tiles.Location[] = []
 let local_location: tiles.Location = null
-let active_player = false
 let valid_spots: tiles.Location[] = []
 let sprite_selected_piece: Sprite = null
 let selected_piece = false
+let active_player = false
+active_player = false
 selected_piece = false
 sprite_selected_piece = null
 valid_spots = []
-active_player = false
 make_cursor()
 scene.setBackgroundColor(13)
 make_tilemap(true)
 make_pieces()
 make_tilemap(false)
+prepare_text()
 spriteutils.setConsoleOverlay(true)
 game.onUpdate(function () {
     sprite_cursor.top = sprite_cursor_pointer.top
@@ -317,4 +328,12 @@ game.onUpdate(function () {
     } else {
         sprite_cursor.image.replace(9, 1)
     }
+})
+forever(function () {
+    if (active_player) {
+        sprite_text_current_player.setText("Black")
+    } else {
+        sprite_text_current_player.setText("White")
+    }
+    pause(100)
 })
