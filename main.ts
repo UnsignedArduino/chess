@@ -73,10 +73,6 @@ function prepare_text () {
     sprite_text_moves_found.left = 16
     sprite_text_moves_found.top = 90
     sprite_text_moves_found.setFlag(SpriteFlag.RelativeToCamera, true)
-    sprite_text_error_message = textsprite.create("", 0, 2)
-    sprite_text_error_message.left = 15
-    sprite_text_error_message.top = 90
-    sprite_text_error_message.setFlag(SpriteFlag.RelativeToCamera, true)
 }
 controller.B.onEvent(ControllerButtonEvent.Pressed, function () {
     if (!(lock_chessboard)) {
@@ -186,10 +182,6 @@ controller.A.onEvent(ControllerButtonEvent.Pressed, function () {
                     selected_piece = true
                 } else {
                     scene.cameraShake(4, 200)
-                    sprite_text_error_message.setText("Not your piece!")
-                    timer.after(2500, function () {
-                        sprite_text_error_message.setText("")
-                    })
                 }
             }
         } else {
@@ -203,10 +195,6 @@ controller.A.onEvent(ControllerButtonEvent.Pressed, function () {
                     active_player = !(active_player)
                 } else {
                     scene.cameraShake(4, 200)
-                    sprite_text_error_message.setText("Not a legal spot!")
-                    timer.after(2500, function () {
-                        sprite_text_error_message.setText("")
-                    })
                 }
                 sprite_text_moves_found.setText("")
                 make_tilemap(false)
@@ -355,7 +343,6 @@ let local_formatted_time = ""
 let sprite_cursor: Sprite = null
 let sprite_cursor_pointer: Sprite = null
 let pieces_clicked: Sprite[] = []
-let sprite_text_error_message: TextSprite = null
 let sprite_text_moves_found: TextSprite = null
 let sprite_text_player_black_time: TextSprite = null
 let sprite_text_black_time_label: TextSprite = null
@@ -372,8 +359,8 @@ let sprite_selected_piece: Sprite = null
 let selected_piece = false
 let active_player = false
 active_player = false
-let white_player_time = 100
-let black_player_time = 100
+let white_player_time = 120
+let black_player_time = 120
 selected_piece = false
 sprite_selected_piece = null
 valid_spots = []
