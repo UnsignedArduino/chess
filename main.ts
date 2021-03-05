@@ -329,8 +329,8 @@ let sprite_selected_piece: Sprite = null
 let selected_piece = false
 let active_player = false
 active_player = false
-let white_player_time = 300
-let black_player_time = 300
+let white_player_time = 60
+let black_player_time = 90
 selected_piece = false
 sprite_selected_piece = null
 valid_spots = []
@@ -359,4 +359,27 @@ forever(function () {
     sprite_text_player_black_time.setText(": " + format_time(black_player_time))
     sprite_text_white_player_time.setText(": " + format_time(white_player_time))
     pause(100)
+})
+forever(function () {
+    if (active_player) {
+        if (black_player_time > 60) {
+            timer.throttle("black_player_time", 1000, function () {
+                black_player_time += -1
+            })
+        } else {
+            timer.throttle("black_player_time", 100, function () {
+                black_player_time = spriteutils.roundWithPrecision(black_player_time - 0.1, 1)
+            })
+        }
+    } else {
+        if (white_player_time > 60) {
+            timer.throttle("white_player_time", 100, function () {
+                white_player_time += -1
+            })
+        } else {
+            timer.throttle("white_player_time", 100, function () {
+                white_player_time = spriteutils.roundWithPrecision(white_player_time - 0.1, 1)
+            })
+        }
+    }
 })

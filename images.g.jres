@@ -10,64 +10,64 @@
         "displayName": "cursor_pointer"
     },
     "image9": {
-        "data": "hwQIAAgAAAAREQAAEREBEAAREREREREREREREQAREREREQEQEREAAA==",
+        "data": "hwQIAAgAAAAAAAAAEBEBAQAQEQEQEREBEBERAQAQEQEQEQEBAAAAAA==",
         "mimeType": "image/x-mkcd-f4",
         "displayName": "white_rook"
     },
-    "image11": {
-        "data": "hwQIAAgAAAAAAAAQAAAAERAREREREREREQARERAQEREAAAARAAAAEA==",
-        "mimeType": "image/x-mkcd-f4",
-        "displayName": "white_bishop"
-    },
-    "image12": {
-        "data": "hwQIAAgAAAAAEAEAAAEREAABEBEBEBERARAREQABEBEAAREQABABAA==",
-        "mimeType": "image/x-mkcd-f4",
-        "displayName": "white_king"
-    },
-    "image13": {
-        "data": "hwQIAAgAAAAAEQEAABAREAAAEREBERERAREREQAAEREAEBEQABEBAA==",
-        "mimeType": "image/x-mkcd-f4",
-        "displayName": "white_queen"
-    },
-    "image14": {
-        "data": "hwQIAAgAAAAAAAAAAAAAEAABAREQEREREBEREQABAREAAAAQAAAAAA==",
-        "mimeType": "image/x-mkcd-f4",
-        "displayName": "white_pawn"
-    },
     "image3": {
-        "data": "hwQIAAgAAAD//wAA//8P8AD//////////////wD//////w/w//8AAA==",
+        "data": "hwQIAAgAAAAAAAAA8P8ADwDw/w/w//8P8P//DwDw/w/w/wAPAAAAAA==",
         "mimeType": "image/x-mkcd-f4",
         "displayName": "black_rook"
     },
+    "image10": {
+        "data": "hwQIAAgAAAAAAAAAAAEAAQAREAEQEREBEBERARAREQEAEAEAAAAAAA==",
+        "mimeType": "image/x-mkcd-f4",
+        "displayName": "white_knight"
+    },
     "image4": {
-        "data": "hwQIAAgAAAAADwDw8A8A////8P/////////////////w////APAP8A==",
+        "data": "hwQIAAgAAAAAAAAAAA8ADwD/8A/w//8P8P//D/D//w8A8A8AAAAAAA==",
         "mimeType": "image/x-mkcd-f4",
         "displayName": "black_knight"
     },
+    "image11": {
+        "data": "hwQIAAgAAAAAAAAAAAAAAQAREQEQEREBEAEQAQABEQEAAAABAAAAAA==",
+        "mimeType": "image/x-mkcd-f4",
+        "displayName": "white_bishop"
+    },
     "image5": {
-        "data": "hwQIAAgAAAAAAADwAAAA//D//////////wD///Dw//8AAAD/AAAA8A==",
+        "data": "hwQIAAgAAAAAAAAAAAAADwD//w/w//8P8A/wDwAP/w8AAAAPAAAAAA==",
         "mimeType": "image/x-mkcd-f4",
         "displayName": "black_bishop"
     },
-    "image6": {
-        "data": "hwQIAAgAAAAA8A8AAA//8AAP8P8P8P//D/D//wAP8P8AD//wAPAPAA==",
+    "image14": {
+        "data": "hwQIAAgAAAAAAAAAAAAAAAABAQEQEREBEBERAQABAQEAAAAAAAAAAA==",
         "mimeType": "image/x-mkcd-f4",
-        "displayName": "black_king"
-    },
-    "image7": {
-        "data": "hwQIAAgAAAAA/w8AAPD/8AAA//8P////D////wAA//8A8P/wAP8PAA==",
-        "mimeType": "image/x-mkcd-f4",
-        "displayName": "black_queen"
+        "displayName": "white_pawn"
     },
     "image8": {
-        "data": "hwQIAAgAAAAAAAAAAAAA8AAPD//w////8P///wAPD/8AAADwAAAAAA==",
+        "data": "hwQIAAgAAAAAAAAAAAAAAAAPDw/w//8P8P//DwAPDw8AAAAAAAAAAA==",
         "mimeType": "image/x-mkcd-f4",
         "displayName": "black_pawn"
     },
-    "image10": {
-        "data": "hwQIAAgAAAAAAQAQEAEAEREREBEREREREREREREREREQERERABABEA==",
+    "image12": {
+        "data": "hwQIAAgAAAAAAAAAABAAAQABAQEBEBABARAQAQABAQEAEAABAAAAAA==",
         "mimeType": "image/x-mkcd-f4",
-        "displayName": "white_knight"
+        "displayName": "white_king"
+    },
+    "image6": {
+        "data": "hwQIAAgAAAAAAAAAAPAADwAPDw8P8PAPD/DwDwAPDw8A8AAPAAAAAA==",
+        "mimeType": "image/x-mkcd-f4",
+        "displayName": "black_king"
+    },
+    "image13": {
+        "data": "hwQIAAgAAAAAAAAAABEBAQAAEAEQEBEBEBARAQAAEAEAEQEBAAAAAA==",
+        "mimeType": "image/x-mkcd-f4",
+        "displayName": "white_queen"
+    },
+    "image7": {
+        "data": "hwQIAAgAAAAAAAAAAP8PDwAA8A/w8P8P8PD/DwAA8A8A/w8PAAAAAA==",
+        "mimeType": "image/x-mkcd-f4",
+        "displayName": "black_queen"
     },
     "*": {
         "mimeType": "image/x-mkcd-f4",
