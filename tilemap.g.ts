@@ -69,9 +69,9 @@ namespace myTiles {
     //% fixedInstance jres blockIdentity=images._tile
     export const tile24 = image.ofBuffer(hex``);
     //% fixedInstance jres blockIdentity=images._tile
-    export const tile33 = image.ofBuffer(hex``);
-    //% fixedInstance jres blockIdentity=images._tile
     export const tile34 = image.ofBuffer(hex``);
+    //% fixedInstance jres blockIdentity=images._tile
+    export const tile33 = image.ofBuffer(hex``);
 
     helpers._registerFactory("tilemap", function(name: string) {
         switch(helpers.stringTrim(name)) {
@@ -147,7 +147,7 @@ namespace myTiles {
 . . . . . . . . . . . . . . . . . . . . 
 . . . . . . . . . . . . . . . . . . . . 
 . . . . . . . . . . . . . . . . . . . . 
-`, [myTiles.transparency8,myTiles.tile1,myTiles.tile3,myTiles.tile5,myTiles.tile6,myTiles.tile9,myTiles.tile12], TileScale.Eight);
+`, [myTiles.transparency8,myTiles.tile1,myTiles.tile3,myTiles.tile5,myTiles.tile6,myTiles.tile9,myTiles.tile12,myTiles.tile33], TileScale.Eight);
         }
         return null;
     })
@@ -220,10 +220,10 @@ namespace myTiles {
             case "tile23":return tile23;
             case "myTile6":
             case "tile24":return tile24;
-            case "red_tile_on_dark":
-            case "tile33":return tile33;
             case "red_tile_on_light":
             case "tile34":return tile34;
+            case "red_tile":
+            case "tile33":return tile33;
         }
         return null;
     })

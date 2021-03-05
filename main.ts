@@ -72,11 +72,7 @@ function highlight_all_attacked_tiles (piece: Sprite, color: boolean) {
         }
         for (let location of get_valid_spots(sprite_piece, true)) {
             if (within(tiles.locationXY(location, tiles.XY.row), 2, 9, true) && within(tiles.locationXY(location, tiles.XY.column), 2, 9, true)) {
-                if (tiles.tileAtLocationEquals(location, assets.tile`dark_tile`)) {
-                    tiles.setTileAt(location, assets.tile`red_tile_on_dark`)
-                } else {
-                    tiles.setTileAt(location, assets.tile`red_tile_on_light`)
-                }
+                tiles.setTileAt(location, assets.tile`red_tile`)
             }
         }
     }
@@ -214,6 +210,16 @@ controller.A.onEvent(ControllerButtonEvent.Pressed, function () {
                             }
                         }
                     }
+                    if (sprites.readDataString(sprite_selected_piece, "type") == "king") {
+                        highlight_all_attacked_tiles(sprite_selected_piece, false)
+                        for (let location of tiles.getTilesByType(assets.tile`red_tile`)) {
+                            if (is_even(tiles.locationXY(location, tiles.XY.column) + tiles.locationXY(location, tiles.XY.row))) {
+                                tiles.setTileAt(location, assets.tile`light_tile`)
+                            } else {
+                                tiles.setTileAt(location, assets.tile`dark_tile`)
+                            }
+                        }
+                    }
                     sprite_text_moves_found.setText("Moves found: " + (tiles.getTilesByType(assets.tile`green_tile_on_dark`).length + tiles.getTilesByType(assets.tile`green_tile_on_light`).length))
                     if (tiles.getTilesByType(assets.tile`green_tile_on_dark`).length + tiles.getTilesByType(assets.tile`green_tile_on_light`).length == 0) {
                         sprite_text_moves_found.image.replace(15, 2)
@@ -265,7 +271,7 @@ function make_cursor () {
 }
 function get_valid_king_spot (piece: Sprite) {
     local_valid_king_spots = []
-    highlight_all_attacked_tiles(piece, false)
+    local_valid_spots = []
     check_location(piece, 0, -1)
     check_location(piece, 1, -1)
     check_location(piece, 1, 0)
@@ -274,6 +280,9 @@ function get_valid_king_spot (piece: Sprite) {
     check_location(piece, -1, 1)
     check_location(piece, -1, 0)
     check_location(piece, -1, -1)
+    for (let value of local_valid_spots) {
+        local_valid_king_spots.push(value)
+    }
     return local_valid_king_spots
 }
 function make_tilemap (with_piece_tiles: boolean) {
@@ -378,6 +387,9 @@ function format_time (seconds: number) {
     }
     local_formatted_time = "" + local_formatted_time + seconds % 60 + "s"
     return local_formatted_time
+}
+function is_even (x: number) {
+    return x % 2 == 0
 }
 let local_formatted_time = ""
 let local_valid_king_spots: tiles.Location[] = []
