@@ -131,14 +131,18 @@ controller.A.onEvent(ControllerButtonEvent.Pressed, function () {
             valid_spots = get_valid_spots(sprite_selected_piece)
             for (let location of valid_spots) {
                 if (within(tiles.locationXY(location, tiles.XY.row), 1, 8, true) && within(tiles.locationXY(location, tiles.XY.column), 2, 9, true)) {
-                    tiles.setTileAt(location, assets.tile`green_tile`)
+                    if (tiles.tileAtLocationEquals(location, assets.tile`dark_tile`)) {
+                        tiles.setTileAt(location, assets.tile`green_tile_on_dark`)
+                    } else {
+                        tiles.setTileAt(location, assets.tile`green_tile_on_light`)
+                    }
                 }
             }
             selected_piece = true
         }
     } else {
         if (sprite_selected_piece) {
-            if (tiles.tileIs(tiles.locationOfSprite(sprite_cursor_pointer), assets.tile`green_tile`)) {
+            if (tiles.tileIs(tiles.locationOfSprite(sprite_cursor_pointer), assets.tile`green_tile_on_dark`) || tiles.tileIs(tiles.locationOfSprite(sprite_cursor_pointer), assets.tile`green_tile_on_light`)) {
                 if (grid.getSprites(tiles.locationOfSprite(sprite_cursor_pointer)).length > 0) {
                     grid.getSprites(tiles.locationOfSprite(sprite_cursor_pointer))[0].destroy()
                 }
