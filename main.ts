@@ -71,11 +71,11 @@ function prepare_text () {
     sprite_text_player_black_time.setFlag(SpriteFlag.RelativeToCamera, true)
     sprite_text_moves_found = textsprite.create("", 0, 15)
     sprite_text_moves_found.left = 16
-    sprite_text_moves_found.top = 100
+    sprite_text_moves_found.top = 90
     sprite_text_moves_found.setFlag(SpriteFlag.RelativeToCamera, true)
     sprite_text_error_message = textsprite.create("", 0, 2)
-    sprite_text_error_message.bottom = scene.screenHeight() - 2
     sprite_text_error_message.left = 15
+    sprite_text_error_message.top = 90
     sprite_text_error_message.setFlag(SpriteFlag.RelativeToCamera, true)
 }
 controller.B.onEvent(ControllerButtonEvent.Pressed, function () {
