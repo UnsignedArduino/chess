@@ -13,44 +13,73 @@ function check_location (piece: Sprite, d_col: number, d_row: number) {
         return false
     }
 }
-function get_valid_pawn_spot (piece: Sprite) {
+function get_valid_pawn_spot (piece: Sprite, attack_only: boolean) {
     local_valid_spots = []
     if (sprites.readDataBoolean(piece, "color")) {
-        if (grid.getSprites(tiles.getTileLocation(grid.spriteCol(piece), grid.spriteRow(piece) + 1)).length == 0) {
-            local_valid_spots.push(grid.add(grid.getLocation(piece), 0, 1))
-        }
-        if (!(sprites.readDataBoolean(piece, "moved"))) {
-            if (grid.getSprites(tiles.getTileLocation(grid.spriteCol(piece), grid.spriteRow(piece) + 2)).length == 0) {
-                local_valid_spots.push(grid.add(grid.getLocation(piece), 0, 2))
-            }
-        }
-        local_other_piece = grid.getSprites(tiles.getTileLocation(grid.spriteCol(piece) - 1, grid.spriteRow(piece) + 1))
-        if (local_other_piece.length > 0 && !(sprites.readDataBoolean(local_other_piece[0], "color"))) {
+        if (attack_only) {
             local_valid_spots.push(grid.add(grid.getLocation(piece), -1, 1))
-        }
-        local_other_piece = grid.getSprites(tiles.getTileLocation(grid.spriteCol(piece) + 1, grid.spriteRow(piece) + 1))
-        if (local_other_piece.length > 0 && !(sprites.readDataBoolean(local_other_piece[0], "color"))) {
             local_valid_spots.push(grid.add(grid.getLocation(piece), 1, 1))
+        } else {
+            if (grid.getSprites(tiles.getTileLocation(grid.spriteCol(piece), grid.spriteRow(piece) + 1)).length == 0) {
+                local_valid_spots.push(grid.add(grid.getLocation(piece), 0, 1))
+            }
+            if (!(sprites.readDataBoolean(piece, "moved"))) {
+                if (grid.getSprites(tiles.getTileLocation(grid.spriteCol(piece), grid.spriteRow(piece) + 2)).length == 0) {
+                    local_valid_spots.push(grid.add(grid.getLocation(piece), 0, 2))
+                }
+            }
+            local_other_piece = grid.getSprites(tiles.getTileLocation(grid.spriteCol(piece) - 1, grid.spriteRow(piece) + 1))
+            if (local_other_piece.length > 0 && !(sprites.readDataBoolean(local_other_piece[0], "color"))) {
+                local_valid_spots.push(grid.add(grid.getLocation(piece), -1, 1))
+            }
+            local_other_piece = grid.getSprites(tiles.getTileLocation(grid.spriteCol(piece) + 1, grid.spriteRow(piece) + 1))
+            if (local_other_piece.length > 0 && !(sprites.readDataBoolean(local_other_piece[0], "color"))) {
+                local_valid_spots.push(grid.add(grid.getLocation(piece), 1, 1))
+            }
         }
     } else {
-        if (grid.getSprites(tiles.getTileLocation(grid.spriteCol(piece), grid.spriteRow(piece) - 1)).length == 0) {
-            local_valid_spots.push(grid.add(grid.getLocation(piece), 0, -1))
-        }
-        if (!(sprites.readDataBoolean(piece, "moved"))) {
-            if (grid.getSprites(tiles.getTileLocation(grid.spriteCol(piece), grid.spriteRow(piece) - 2)).length == 0) {
-                local_valid_spots.push(grid.add(grid.getLocation(piece), 0, -2))
-            }
-        }
-        local_other_piece = grid.getSprites(tiles.getTileLocation(grid.spriteCol(piece) - 1, grid.spriteRow(piece) - 1))
-        if (local_other_piece.length > 0 && sprites.readDataBoolean(local_other_piece[0], "color")) {
+        if (attack_only) {
             local_valid_spots.push(grid.add(grid.getLocation(piece), -1, -1))
-        }
-        local_other_piece = grid.getSprites(tiles.getTileLocation(grid.spriteCol(piece) + 1, grid.spriteRow(piece) - 1))
-        if (local_other_piece.length > 0 && sprites.readDataBoolean(local_other_piece[0], "color")) {
             local_valid_spots.push(grid.add(grid.getLocation(piece), 1, -1))
+        } else {
+            if (grid.getSprites(tiles.getTileLocation(grid.spriteCol(piece), grid.spriteRow(piece) - 1)).length == 0) {
+                local_valid_spots.push(grid.add(grid.getLocation(piece), 0, -1))
+            }
+            if (!(sprites.readDataBoolean(piece, "moved"))) {
+                if (grid.getSprites(tiles.getTileLocation(grid.spriteCol(piece), grid.spriteRow(piece) - 2)).length == 0) {
+                    local_valid_spots.push(grid.add(grid.getLocation(piece), 0, -2))
+                }
+            }
+            local_other_piece = grid.getSprites(tiles.getTileLocation(grid.spriteCol(piece) - 1, grid.spriteRow(piece) - 1))
+            if (local_other_piece.length > 0 && sprites.readDataBoolean(local_other_piece[0], "color")) {
+                local_valid_spots.push(grid.add(grid.getLocation(piece), -1, -1))
+            }
+            local_other_piece = grid.getSprites(tiles.getTileLocation(grid.spriteCol(piece) + 1, grid.spriteRow(piece) - 1))
+            if (local_other_piece.length > 0 && sprites.readDataBoolean(local_other_piece[0], "color")) {
+                local_valid_spots.push(grid.add(grid.getLocation(piece), 1, -1))
+            }
         }
     }
     return local_valid_spots
+}
+function highlight_all_attacked_tiles (piece: Sprite, color: boolean) {
+    for (let sprite_piece of sprites.allOfKind(SpriteKind.Piece)) {
+        if (sprites.readDataBoolean(sprite_piece, "color") == color) {
+            continue;
+        }
+        if (sprites.readDataString(piece, "type") == sprites.readDataString(sprite_piece, "type")) {
+            continue;
+        }
+        for (let location of get_valid_spots(sprite_piece, true)) {
+            if (within(tiles.locationXY(location, tiles.XY.row), 2, 9, true) && within(tiles.locationXY(location, tiles.XY.column), 2, 9, true)) {
+                if (tiles.tileAtLocationEquals(location, assets.tile`dark_tile`)) {
+                    tiles.setTileAt(location, assets.tile`red_tile_on_dark`)
+                } else {
+                    tiles.setTileAt(location, assets.tile`red_tile_on_light`)
+                }
+            }
+        }
+    }
 }
 function prepare_text () {
     sprite_text_player_label = textsprite.create("Player:", 0, 15)
@@ -115,7 +144,7 @@ function get_valid_bishop_spot (piece: Sprite) {
     }
     return local_valid_spots
 }
-function get_valid_spots (piece: Sprite) {
+function get_valid_spots (piece: Sprite, attack_only: boolean) {
     if (sprites.readDataString(piece, "type") == "rook") {
         return get_valid_rook_spot(piece)
     } else if (sprites.readDataString(piece, "type") == "knight") {
@@ -127,7 +156,7 @@ function get_valid_spots (piece: Sprite) {
     } else if (sprites.readDataString(piece, "type") == "queen") {
         return get_valid_queen_spot(piece)
     } else {
-        return get_valid_pawn_spot(piece)
+        return get_valid_pawn_spot(piece, attack_only)
     }
 }
 function make_pieces () {
@@ -175,7 +204,7 @@ controller.A.onEvent(ControllerButtonEvent.Pressed, function () {
             if (pieces_clicked.length > 0) {
                 if (sprites.readDataBoolean(pieces_clicked[0], "color") == active_player) {
                     sprite_selected_piece = pieces_clicked[0]
-                    valid_spots = get_valid_spots(sprite_selected_piece)
+                    valid_spots = get_valid_spots(sprite_selected_piece, false)
                     for (let location of valid_spots) {
                         if (within(tiles.locationXY(location, tiles.XY.row), 2, 9, true) && within(tiles.locationXY(location, tiles.XY.column), 2, 9, true)) {
                             if (tiles.tileAtLocationEquals(location, assets.tile`dark_tile`)) {
@@ -235,7 +264,8 @@ function make_cursor () {
     enable_cursor(true)
 }
 function get_valid_king_spot (piece: Sprite) {
-    local_valid_spots = []
+    local_valid_king_spots = []
+    highlight_all_attacked_tiles(piece, false)
     check_location(piece, 0, -1)
     check_location(piece, 1, -1)
     check_location(piece, 1, 0)
@@ -244,11 +274,11 @@ function get_valid_king_spot (piece: Sprite) {
     check_location(piece, -1, 1)
     check_location(piece, -1, 0)
     check_location(piece, -1, -1)
-    return local_valid_spots
+    return local_valid_king_spots
 }
 function make_tilemap (with_piece_tiles: boolean) {
     if (with_piece_tiles) {
-        tiles.setSmallTilemap(tilemap`board_with_tile_pieces`)
+        tiles.setSmallTilemap(tilemap`board_for_test`)
     } else {
         tiles.setSmallTilemap(tilemap`board`)
     }
@@ -350,6 +380,7 @@ function format_time (seconds: number) {
     return local_formatted_time
 }
 let local_formatted_time = ""
+let local_valid_king_spots: tiles.Location[] = []
 let sprite_cursor: Sprite = null
 let sprite_cursor_pointer: Sprite = null
 let pieces_clicked: Sprite[] = []
