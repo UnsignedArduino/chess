@@ -49,6 +49,14 @@ function prepare_text () {
     sprite_text_current_player = textsprite.create("", 0, 15)
     sprite_text_current_player.top = sprite_text_player_label.bottom
     sprite_text_current_player.left = sprite_text_player_label.left + 1
+    sprite_text_white_player_time = textsprite.create("", 0, 15)
+    sprite_text_white_player_time.top = 34
+    sprite_text_white_player_time.left = sprite_text_current_player.left
+    sprite_text_white_player_time.setIcon(assets.image`white_knight`)
+    sprite_text_player_black_time = textsprite.create("", 0, 15)
+    sprite_text_player_black_time.top = 44
+    sprite_text_player_black_time.left = sprite_text_current_player.left
+    sprite_text_player_black_time.setIcon(assets.image`black_knight`)
 }
 controller.B.onEvent(ControllerButtonEvent.Pressed, function () {
     selected_piece = false
@@ -98,7 +106,7 @@ function make_pieces () {
         make_piece(sprites.create(assets.image`white_rook`, SpriteKind.Piece), tiles.locationXY(location, tiles.XY.column), tiles.locationXY(location, tiles.XY.row), "rook", false)
     }
     for (let location of tiles.getTilesByType(assets.tile`white_knight_tile`)) {
-        make_piece(sprites.create(assets.image`white_knigh`, SpriteKind.Piece), tiles.locationXY(location, tiles.XY.column), tiles.locationXY(location, tiles.XY.row), "knight", false)
+        make_piece(sprites.create(assets.image`white_knight`, SpriteKind.Piece), tiles.locationXY(location, tiles.XY.column), tiles.locationXY(location, tiles.XY.row), "knight", false)
     }
     for (let location of tiles.getTilesByType(assets.tile`white_bishop_tile`)) {
         make_piece(sprites.create(assets.image`white_bishop`, SpriteKind.Piece), tiles.locationXY(location, tiles.XY.column), tiles.locationXY(location, tiles.XY.row), "bishop", false)
@@ -297,9 +305,20 @@ function make_piece (sprite: Sprite, col: number, row: number, _type: string, co
     sprites.setDataBoolean(sprite, "color", color)
     sprites.setDataBoolean(sprite, "moved", false)
 }
+function format_time (seconds: number) {
+    local_formatted_time = ""
+    if (seconds >= 60) {
+        local_formatted_time = "" + Math.idiv(seconds, 60) + "m "
+    }
+    local_formatted_time = "" + local_formatted_time + seconds % 60 + "s"
+    return local_formatted_time
+}
+let local_formatted_time = ""
 let sprite_cursor: Sprite = null
 let sprite_cursor_pointer: Sprite = null
 let pieces_clicked: Sprite[] = []
+let sprite_text_player_black_time: TextSprite = null
+let sprite_text_white_player_time: TextSprite = null
 let sprite_text_current_player: TextSprite = null
 let sprite_text_player_label: TextSprite = null
 let local_other_piece: Sprite[] = []
@@ -310,6 +329,8 @@ let sprite_selected_piece: Sprite = null
 let selected_piece = false
 let active_player = false
 active_player = false
+let white_player_time = 300
+let black_player_time = 300
 selected_piece = false
 sprite_selected_piece = null
 valid_spots = []
@@ -335,5 +356,7 @@ forever(function () {
     } else {
         sprite_text_current_player.setText("White")
     }
+    sprite_text_player_black_time.setText(": " + format_time(black_player_time))
+    sprite_text_white_player_time.setText(": " + format_time(white_player_time))
     pause(100)
 })

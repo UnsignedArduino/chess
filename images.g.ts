@@ -37,17 +37,6 @@ f
 . . 1 1 1 1 . . 
 . 1 1 1 1 1 1 . 
 `;
-            case "image10":
-            case "white_knigh":return img`
-. . 1 1 1 1 . . 
-. 1 1 1 1 1 1 . 
-1 1 1 1 1 1 1 . 
-. . 1 1 1 1 1 1 
-. . . 1 1 1 1 1 
-. . 1 1 1 1 1 . 
-. 1 1 1 1 1 1 . 
-1 1 1 1 1 1 1 1 
-`;
             case "image11":
             case "white_bishop":return img`
 . . . 1 1 . . . 
@@ -157,6 +146,17 @@ f f f f f f f f
 . . . f f . . . 
 . . f f f f . . 
 . f f f f f f . 
+`;
+            case "image10":
+            case "white_knight":return img`
+. . 1 1 1 1 . . 
+. 1 1 1 1 1 1 . 
+1 1 1 1 1 1 1 . 
+. . 1 1 1 1 1 1 
+. . . 1 1 1 1 1 
+. . 1 1 1 1 1 . 
+. 1 1 1 1 1 1 . 
+1 1 1 1 1 1 1 1 
 `;
         }
         return null;

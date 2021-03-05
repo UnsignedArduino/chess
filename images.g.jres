@@ -14,11 +14,6 @@
         "mimeType": "image/x-mkcd-f4",
         "displayName": "white_rook"
     },
-    "image10": {
-        "data": "hwQIAAgAAAAAAQAQEAEAEREREBEREREREREREREREREQERERABABEA==",
-        "mimeType": "image/x-mkcd-f4",
-        "displayName": "white_knigh"
-    },
     "image11": {
         "data": "hwQIAAgAAAAAAAAQAAAAERAREREREREREQARERAQEREAAAARAAAAEA==",
         "mimeType": "image/x-mkcd-f4",
@@ -68,6 +63,11 @@
         "data": "hwQIAAgAAAAAAAAAAAAA8AAPD//w////8P///wAPD/8AAADwAAAAAA==",
         "mimeType": "image/x-mkcd-f4",
         "displayName": "black_pawn"
+    },
+    "image10": {
+        "data": "hwQIAAgAAAAAAQAQEAEAEREREBEREREREREREREREREQERERABABEA==",
+        "mimeType": "image/x-mkcd-f4",
+        "displayName": "white_knight"
     },
     "*": {
         "mimeType": "image/x-mkcd-f4",
