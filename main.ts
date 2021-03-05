@@ -19,6 +19,11 @@ function get_valid_pawn_spot (piece: Sprite) {
         if (grid.getSprites(tiles.getTileLocation(grid.spriteCol(piece), grid.spriteRow(piece) + 1)).length == 0) {
             local_valid_spots.push(grid.add(grid.getLocation(piece), 0, 1))
         }
+        if (!(sprites.readDataBoolean(piece, "moved"))) {
+            if (grid.getSprites(tiles.getTileLocation(grid.spriteCol(piece), grid.spriteRow(piece) + 2)).length == 0) {
+                local_valid_spots.push(grid.add(grid.getLocation(piece), 0, 2))
+            }
+        }
         local_other_piece = grid.getSprites(tiles.getTileLocation(grid.spriteCol(piece) - 1, grid.spriteRow(piece) + 1))
         if (local_other_piece.length > 0 && !(sprites.readDataBoolean(local_other_piece[0], "color"))) {
             local_valid_spots.push(grid.add(grid.getLocation(piece), -1, 1))
@@ -30,6 +35,11 @@ function get_valid_pawn_spot (piece: Sprite) {
     } else {
         if (grid.getSprites(tiles.getTileLocation(grid.spriteCol(piece), grid.spriteRow(piece) - 1)).length == 0) {
             local_valid_spots.push(grid.add(grid.getLocation(piece), 0, -1))
+        }
+        if (!(sprites.readDataBoolean(piece, "moved"))) {
+            if (grid.getSprites(tiles.getTileLocation(grid.spriteCol(piece), grid.spriteRow(piece) - 2)).length == 0) {
+                local_valid_spots.push(grid.add(grid.getLocation(piece), 0, -2))
+            }
         }
         local_other_piece = grid.getSprites(tiles.getTileLocation(grid.spriteCol(piece) - 1, grid.spriteRow(piece) - 1))
         if (local_other_piece.length > 0 && sprites.readDataBoolean(local_other_piece[0], "color")) {
