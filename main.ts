@@ -211,7 +211,8 @@ controller.A.onEvent(ControllerButtonEvent.Pressed, function () {
                         }
                     }
                     if (sprites.readDataString(sprite_selected_piece, "type") == "king") {
-                        highlight_all_attacked_tiles(sprite_selected_piece, false)
+                        // Remove king from grid before this call after this call add it back
+                        highlight_all_attacked_tiles(sprite_selected_piece, sprites.readDataBoolean(sprite_selected_piece, "color"))
                         for (let location of tiles.getTilesByType(assets.tile`red_tile`)) {
                             if (is_even(tiles.locationXY(location, tiles.XY.column) + tiles.locationXY(location, tiles.XY.row))) {
                                 tiles.setTileAt(location, assets.tile`light_tile`)
