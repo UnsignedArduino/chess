@@ -191,6 +191,9 @@ controller.A.onEvent(ControllerButtonEvent.Pressed, function () {
         lock_chessboard = false
         game_started = true
         sprite_go_button.destroy()
+        for (let sprite of sprites.allOfKind(SpriteKind.Text)) {
+            sprite.setFlag(SpriteFlag.GhostThroughSprites, true)
+        }
     } else if (game_started) {
         if (!(lock_chessboard)) {
             if (!(selected_piece)) {
@@ -283,8 +286,8 @@ function get_valid_king_spot (piece: Sprite) {
     check_location(piece, -1, 1)
     check_location(piece, -1, 0)
     check_location(piece, -1, -1)
-    for (let value of local_valid_spots) {
-        local_valid_king_spots.push(value)
+    for (let sprite of local_valid_spots) {
+        local_valid_king_spots.push(sprite)
     }
     return local_valid_king_spots
 }
