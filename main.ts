@@ -186,6 +186,11 @@ function make_pieces () {
         make_piece(sprites.create(assets.image`black_pawn`, SpriteKind.Piece), tiles.locationXY(location, tiles.XY.column), tiles.locationXY(location, tiles.XY.row), "pawn", true)
     }
 }
+function create_buttons () {
+    sprite_go_button = sprites.create(assets.image`go_button`, SpriteKind.Text)
+    sprite_go_button.top = 55
+    sprite_go_button.left = 92
+}
 controller.A.onEvent(ControllerButtonEvent.Pressed, function () {
     if (sprite_cursor_pointer.overlapsWith(sprite_go_button)) {
         lock_chessboard = false
@@ -202,29 +207,15 @@ controller.A.onEvent(ControllerButtonEvent.Pressed, function () {
                     if (sprites.readDataBoolean(pieces_clicked[0], "color") == active_player) {
                         sprite_selected_piece = pieces_clicked[0]
                         valid_spots = get_valid_spots(sprite_selected_piece, false)
-                        for (let location of valid_spots) {
-                            if (within(tiles.locationXY(location, tiles.XY.row), 2, 9, true) && within(tiles.locationXY(location, tiles.XY.column), 2, 9, true)) {
-                                if (tiles.tileAtLocationEquals(location, assets.tile`dark_tile`)) {
-                                    tiles.setTileAt(location, assets.tile`green_tile_on_dark`)
-                                } else {
-                                    tiles.setTileAt(location, assets.tile`green_tile_on_light`)
-                                }
-                            }
-                        }
+                        show_valid_spots()
                         if (sprites.readDataString(sprite_selected_piece, "type") == "king") {
                             grid.remove(sprite_selected_piece)
                             highlight_all_attacked_tiles(sprite_selected_piece, sprites.readDataBoolean(sprite_selected_piece, "color"))
                             grid.snap(sprite_selected_piece)
-                            for (let location of tiles.getTilesByType(assets.tile`red_tile`)) {
-                                if (is_even(tiles.locationXY(location, tiles.XY.column) + tiles.locationXY(location, tiles.XY.row))) {
-                                    tiles.setTileAt(location, assets.tile`light_tile`)
-                                } else {
-                                    tiles.setTileAt(location, assets.tile`dark_tile`)
-                                }
-                            }
+                            reset_attacked_tiles()
                         }
-                        sprite_text_moves_found.setText("Moves found: " + (tiles.getTilesByType(assets.tile`green_tile_on_dark`).length + tiles.getTilesByType(assets.tile`green_tile_on_light`).length))
-                        if (tiles.getTilesByType(assets.tile`green_tile_on_dark`).length + tiles.getTilesByType(assets.tile`green_tile_on_light`).length == 0) {
+                        sprite_text_moves_found.setText("Moves found: " + number_of_valid_spots())
+                        if (number_of_valid_spots() == 0) {
                             sprite_text_moves_found.image.replace(15, 2)
                         }
                         selected_piece = true
@@ -266,6 +257,17 @@ function get_valid_knight_spot (piece: Sprite) {
     check_location(piece, -1, -2)
     return local_valid_spots
 }
+function show_valid_spots () {
+    for (let location of valid_spots) {
+        if (within(tiles.locationXY(location, tiles.XY.row), 2, 9, true) && within(tiles.locationXY(location, tiles.XY.column), 2, 9, true)) {
+            if (tiles.tileAtLocationEquals(location, assets.tile`dark_tile`)) {
+                tiles.setTileAt(location, assets.tile`green_tile_on_dark`)
+            } else {
+                tiles.setTileAt(location, assets.tile`green_tile_on_light`)
+            }
+        }
+    }
+}
 function make_cursor () {
     sprite_cursor = sprites.create(assets.image`cursor`, SpriteKind.Player)
     sprite_cursor_pointer = sprites.create(assets.image`cursor_pointer`, SpriteKind.Player)
@@ -291,10 +293,17 @@ function get_valid_king_spot (piece: Sprite) {
     }
     return local_valid_king_spots
 }
-function create_go_button () {
-    sprite_go_button = sprites.create(assets.image`go_button`, SpriteKind.Text)
-    sprite_go_button.top = 55
-    sprite_go_button.left = 92
+function reset_attacked_tiles () {
+    for (let location of tiles.getTilesByType(assets.tile`red_tile`)) {
+        if (is_even(tiles.locationXY(location, tiles.XY.column) + tiles.locationXY(location, tiles.XY.row))) {
+            tiles.setTileAt(location, assets.tile`light_tile`)
+        } else {
+            tiles.setTileAt(location, assets.tile`dark_tile`)
+        }
+    }
+}
+function number_of_valid_spots () {
+    return tiles.getTilesByType(assets.tile`green_tile_on_dark`).length + tiles.getTilesByType(assets.tile`green_tile_on_light`).length
 }
 function make_tilemap (with_piece_tiles: boolean) {
     if (with_piece_tiles) {
@@ -406,8 +415,8 @@ let local_formatted_time = ""
 let local_valid_king_spots: tiles.Location[] = []
 let sprite_cursor: Sprite = null
 let pieces_clicked: Sprite[] = []
-let sprite_go_button: Sprite = null
 let sprite_cursor_pointer: Sprite = null
+let sprite_go_button: Sprite = null
 let sprite_text_moves_found: TextSprite = null
 let sprite_text_player_black_time: TextSprite = null
 let sprite_text_black_time_label: TextSprite = null
@@ -438,7 +447,7 @@ make_tilemap(true)
 make_pieces()
 make_tilemap(false)
 prepare_text()
-create_go_button()
+create_buttons()
 spriteutils.setConsoleOverlay(true)
 game.onUpdate(function () {
     sprite_cursor.top = sprite_cursor_pointer.top
