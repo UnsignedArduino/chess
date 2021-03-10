@@ -4,7 +4,7 @@
     "dependencies": {
         "device": "*",
         "Timers": "github:microsoft/arcade-timers#v1.1.0",
-        "Sprite Grid": "github:microsoft/arcade-grid#v1.2.2",
+        "Sprite Grid": "github:microsoft/arcade-grid#v1.3.0",
         "small-tilemaps": "github:riknoll/small-tilemaps#v0.0.1",
         "tilemaps": "github:microsoft/pxt-tilemaps#v1.11.0",
         "arcade-sprite-data": "github:microsoft/arcade-sprite-data#v0.1.0",
@@ -25,7 +25,7 @@
         "test.ts"
     ],
     "targetVersions": {
-        "target": "1.3.44",
+        "target": "1.3.49",
         "targetId": "arcade"
     },
     "supportedTargets": [
