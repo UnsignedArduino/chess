@@ -69,6 +69,11 @@
         "mimeType": "image/x-mkcd-f4",
         "displayName": "black_queen"
     },
+    "image15": {
+        "data": "hwQNAAkAAAD/////DwAAAH93d3cPAAAAf/f/dw8AAAB/f3d/DwAAAH9/f38PAAAAf3//dw8AAAB/d3d3DwAAAH/3/3cPAAAAf393fw8AAAB/f3d/DwAAAH/3/3cPAAAAf3d3dw8AAAD/////DwAAAA==",
+        "mimeType": "image/x-mkcd-f4",
+        "displayName": "go_button"
+    },
     "*": {
         "mimeType": "image/x-mkcd-f4",
         "dataEncoding": "base64",

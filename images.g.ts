@@ -158,6 +158,18 @@ f
 . f f f f f f . 
 . . . . . . . . 
 `;
+            case "image15":
+            case "go_button":return img`
+f f f f f f f f f f f f f 
+f 7 7 7 7 7 7 7 7 7 7 7 f 
+f 7 7 f f f 7 7 f f 7 7 f 
+f 7 f 7 7 7 7 f 7 7 f 7 f 
+f 7 f 7 f f 7 f 7 7 f 7 f 
+f 7 f 7 7 f 7 f 7 7 f 7 f 
+f 7 7 f f 7 7 7 f f 7 7 f 
+f 7 7 7 7 7 7 7 7 7 7 7 f 
+f f f f f f f f f f f f f 
+`;
         }
         return null;
     })

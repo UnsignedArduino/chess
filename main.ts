@@ -81,33 +81,26 @@ function prepare_text () {
     sprite_text_player_label = textsprite.create("Player:", 0, 15)
     sprite_text_player_label.top = 16
     sprite_text_player_label.left = 92
-    sprite_text_player_label.setFlag(SpriteFlag.RelativeToCamera, true)
     sprite_text_current_player = textsprite.create("", 0, 15)
     sprite_text_current_player.top = sprite_text_player_label.bottom
     sprite_text_current_player.left = sprite_text_player_label.left + 1
-    sprite_text_current_player.setFlag(SpriteFlag.RelativeToCamera, true)
     sprite_text_white_time_label = textsprite.create(": ", 0, 15)
     sprite_text_white_time_label.top = 34
     sprite_text_white_time_label.left = sprite_text_current_player.left
     sprite_text_white_time_label.setIcon(assets.image`white_knight`)
-    sprite_text_white_time_label.setFlag(SpriteFlag.RelativeToCamera, true)
     sprite_text_white_player_time = textsprite.create("", 0, 15)
     sprite_text_white_player_time.top = 34
     sprite_text_white_player_time.left = sprite_text_white_time_label.right
-    sprite_text_white_player_time.setFlag(SpriteFlag.RelativeToCamera, true)
     sprite_text_black_time_label = textsprite.create(": ", 0, 15)
     sprite_text_black_time_label.top = 44
     sprite_text_black_time_label.left = sprite_text_current_player.left
     sprite_text_black_time_label.setIcon(assets.image`black_knight`)
-    sprite_text_black_time_label.setFlag(SpriteFlag.RelativeToCamera, true)
     sprite_text_player_black_time = textsprite.create("", 0, 15)
     sprite_text_player_black_time.top = 44
     sprite_text_player_black_time.left = sprite_text_black_time_label.right
-    sprite_text_player_black_time.setFlag(SpriteFlag.RelativeToCamera, true)
     sprite_text_moves_found = textsprite.create("", 0, 15)
     sprite_text_moves_found.left = 16
     sprite_text_moves_found.top = 90
-    sprite_text_moves_found.setFlag(SpriteFlag.RelativeToCamera, true)
 }
 controller.B.onEvent(ControllerButtonEvent.Pressed, function () {
     if (!(lock_chessboard)) {
@@ -194,60 +187,68 @@ function make_pieces () {
     }
 }
 controller.A.onEvent(ControllerButtonEvent.Pressed, function () {
-    if (!(lock_chessboard)) {
-        if (!(selected_piece)) {
-            pieces_clicked = grid.getSprites(tiles.locationOfSprite(sprite_cursor_pointer))
-            if (pieces_clicked.length > 0) {
-                if (sprites.readDataBoolean(pieces_clicked[0], "color") == active_player) {
-                    sprite_selected_piece = pieces_clicked[0]
-                    valid_spots = get_valid_spots(sprite_selected_piece, false)
-                    for (let location of valid_spots) {
-                        if (within(tiles.locationXY(location, tiles.XY.row), 2, 9, true) && within(tiles.locationXY(location, tiles.XY.column), 2, 9, true)) {
-                            if (tiles.tileAtLocationEquals(location, assets.tile`dark_tile`)) {
-                                tiles.setTileAt(location, assets.tile`green_tile_on_dark`)
-                            } else {
-                                tiles.setTileAt(location, assets.tile`green_tile_on_light`)
+    if (sprite_cursor_pointer.overlapsWith(sprite_go_button)) {
+        lock_chessboard = false
+        game_started = true
+        sprite_go_button.destroy()
+    } else if (game_started) {
+        if (!(lock_chessboard)) {
+            if (!(selected_piece)) {
+                pieces_clicked = grid.getSprites(tiles.locationOfSprite(sprite_cursor_pointer))
+                if (pieces_clicked.length > 0) {
+                    if (sprites.readDataBoolean(pieces_clicked[0], "color") == active_player) {
+                        sprite_selected_piece = pieces_clicked[0]
+                        valid_spots = get_valid_spots(sprite_selected_piece, false)
+                        for (let location of valid_spots) {
+                            if (within(tiles.locationXY(location, tiles.XY.row), 2, 9, true) && within(tiles.locationXY(location, tiles.XY.column), 2, 9, true)) {
+                                if (tiles.tileAtLocationEquals(location, assets.tile`dark_tile`)) {
+                                    tiles.setTileAt(location, assets.tile`green_tile_on_dark`)
+                                } else {
+                                    tiles.setTileAt(location, assets.tile`green_tile_on_light`)
+                                }
                             }
                         }
-                    }
-                    if (sprites.readDataString(sprite_selected_piece, "type") == "king") {
-                        grid.remove(sprite_selected_piece)
-                        highlight_all_attacked_tiles(sprite_selected_piece, sprites.readDataBoolean(sprite_selected_piece, "color"))
-                        grid.snap(sprite_selected_piece)
-                        for (let location of tiles.getTilesByType(assets.tile`red_tile`)) {
-                            if (is_even(tiles.locationXY(location, tiles.XY.column) + tiles.locationXY(location, tiles.XY.row))) {
-                                tiles.setTileAt(location, assets.tile`light_tile`)
-                            } else {
-                                tiles.setTileAt(location, assets.tile`dark_tile`)
+                        if (sprites.readDataString(sprite_selected_piece, "type") == "king") {
+                            grid.remove(sprite_selected_piece)
+                            highlight_all_attacked_tiles(sprite_selected_piece, sprites.readDataBoolean(sprite_selected_piece, "color"))
+                            grid.snap(sprite_selected_piece)
+                            for (let location of tiles.getTilesByType(assets.tile`red_tile`)) {
+                                if (is_even(tiles.locationXY(location, tiles.XY.column) + tiles.locationXY(location, tiles.XY.row))) {
+                                    tiles.setTileAt(location, assets.tile`light_tile`)
+                                } else {
+                                    tiles.setTileAt(location, assets.tile`dark_tile`)
+                                }
                             }
                         }
+                        sprite_text_moves_found.setText("Moves found: " + (tiles.getTilesByType(assets.tile`green_tile_on_dark`).length + tiles.getTilesByType(assets.tile`green_tile_on_light`).length))
+                        if (tiles.getTilesByType(assets.tile`green_tile_on_dark`).length + tiles.getTilesByType(assets.tile`green_tile_on_light`).length == 0) {
+                            sprite_text_moves_found.image.replace(15, 2)
+                        }
+                        selected_piece = true
+                    } else {
+                        scene.cameraShake(4, 200)
                     }
-                    sprite_text_moves_found.setText("Moves found: " + (tiles.getTilesByType(assets.tile`green_tile_on_dark`).length + tiles.getTilesByType(assets.tile`green_tile_on_light`).length))
-                    if (tiles.getTilesByType(assets.tile`green_tile_on_dark`).length + tiles.getTilesByType(assets.tile`green_tile_on_light`).length == 0) {
-                        sprite_text_moves_found.image.replace(15, 2)
-                    }
-                    selected_piece = true
-                } else {
-                    scene.cameraShake(4, 200)
                 }
-            }
-        } else {
-            if (sprite_selected_piece) {
-                if (tiles.tileIs(tiles.locationOfSprite(sprite_cursor_pointer), assets.tile`green_tile_on_dark`) || tiles.tileIs(tiles.locationOfSprite(sprite_cursor_pointer), assets.tile`green_tile_on_light`)) {
-                    if (grid.getSprites(tiles.locationOfSprite(sprite_cursor_pointer)).length > 0) {
-                        grid.getSprites(tiles.locationOfSprite(sprite_cursor_pointer))[0].destroy()
+            } else {
+                if (sprite_selected_piece) {
+                    if (tiles.tileIs(tiles.locationOfSprite(sprite_cursor_pointer), assets.tile`green_tile_on_dark`) || tiles.tileIs(tiles.locationOfSprite(sprite_cursor_pointer), assets.tile`green_tile_on_light`)) {
+                        if (grid.getSprites(tiles.locationOfSprite(sprite_cursor_pointer)).length > 0) {
+                            grid.getSprites(tiles.locationOfSprite(sprite_cursor_pointer))[0].destroy()
+                        }
+                        sprites.setDataBoolean(sprite_selected_piece, "moved", true)
+                        grid.place(sprite_selected_piece, tiles.locationOfSprite(sprite_cursor_pointer))
+                        active_player = !(active_player)
+                    } else {
+                        scene.cameraShake(4, 200)
                     }
-                    sprites.setDataBoolean(sprite_selected_piece, "moved", true)
-                    grid.place(sprite_selected_piece, tiles.locationOfSprite(sprite_cursor_pointer))
-                    active_player = !(active_player)
-                } else {
-                    scene.cameraShake(4, 200)
+                    sprite_text_moves_found.setText("")
+                    make_tilemap(false)
                 }
-                sprite_text_moves_found.setText("")
-                make_tilemap(false)
+                selected_piece = false
             }
-            selected_piece = false
         }
+    } else {
+        scene.cameraShake(4, 200)
     }
 })
 function get_valid_knight_spot (piece: Sprite) {
@@ -286,6 +287,11 @@ function get_valid_king_spot (piece: Sprite) {
         local_valid_king_spots.push(value)
     }
     return local_valid_king_spots
+}
+function create_go_button () {
+    sprite_go_button = sprites.create(assets.image`go_button`, SpriteKind.Text)
+    sprite_go_button.top = 55
+    sprite_go_button.left = 92
 }
 function make_tilemap (with_piece_tiles: boolean) {
     if (with_piece_tiles) {
@@ -396,8 +402,9 @@ function is_even (x: number) {
 let local_formatted_time = ""
 let local_valid_king_spots: tiles.Location[] = []
 let sprite_cursor: Sprite = null
-let sprite_cursor_pointer: Sprite = null
 let pieces_clicked: Sprite[] = []
+let sprite_go_button: Sprite = null
+let sprite_cursor_pointer: Sprite = null
 let sprite_text_moves_found: TextSprite = null
 let sprite_text_player_black_time: TextSprite = null
 let sprite_text_black_time_label: TextSprite = null
@@ -408,6 +415,7 @@ let sprite_text_player_label: TextSprite = null
 let local_other_piece: Sprite[] = []
 let local_valid_spots: tiles.Location[] = []
 let local_location: tiles.Location = null
+let game_started = false
 let lock_chessboard = false
 let valid_spots: tiles.Location[] = []
 let sprite_selected_piece: Sprite = null
@@ -419,13 +427,15 @@ let black_player_time = 120
 selected_piece = false
 sprite_selected_piece = null
 valid_spots = []
-lock_chessboard = false
+lock_chessboard = true
+game_started = false
 make_cursor()
 scene.setBackgroundColor(13)
 make_tilemap(true)
 make_pieces()
 make_tilemap(false)
 prepare_text()
+create_go_button()
 spriteutils.setConsoleOverlay(true)
 game.onUpdate(function () {
     sprite_cursor.top = sprite_cursor_pointer.top
@@ -456,44 +466,53 @@ forever(function () {
     pause(100)
 })
 forever(function () {
-    if (black_player_time <= 0) {
-        black_player_time = 0
-        lock_chessboard = true
-        sprite_text_player_label.setText("White wins!")
-        sprite_text_current_player.setText("")
-        pause(100)
-    } else if (white_player_time <= 0) {
-        white_player_time = 0
-        lock_chessboard = true
-        sprite_text_player_label.setText("Black wins!")
-        sprite_text_current_player.setText("")
-        pause(100)
+    if (game_started) {
+        if (black_player_time <= 0) {
+            black_player_time = 0
+            lock_chessboard = true
+            sprite_text_player_label.setText("White wins!")
+            sprite_text_current_player.setText("")
+            pause(100)
+        } else if (white_player_time <= 0) {
+            white_player_time = 0
+            lock_chessboard = true
+            sprite_text_player_label.setText("Black wins!")
+            sprite_text_current_player.setText("")
+            pause(100)
+        } else {
+            if (active_player) {
+                sprite_text_current_player.setText("Black")
+            } else {
+                sprite_text_current_player.setText("White")
+            }
+            if (active_player) {
+                if (black_player_time > 60) {
+                    timer.throttle("black_player_time", 1000, function () {
+                        black_player_time += -1
+                    })
+                } else {
+                    timer.throttle("black_player_time", 100, function () {
+                        black_player_time = spriteutils.roundWithPrecision(black_player_time - 0.1, 1)
+                    })
+                }
+            } else {
+                if (white_player_time > 60) {
+                    timer.throttle("white_player_time", 1000, function () {
+                        white_player_time += -1
+                    })
+                } else {
+                    timer.throttle("white_player_time", 100, function () {
+                        white_player_time = spriteutils.roundWithPrecision(white_player_time - 0.1, 1)
+                    })
+                }
+            }
+        }
     } else {
         if (active_player) {
             sprite_text_current_player.setText("Black")
         } else {
             sprite_text_current_player.setText("White")
         }
-        if (active_player) {
-            if (black_player_time > 60) {
-                timer.throttle("black_player_time", 1000, function () {
-                    black_player_time += -1
-                })
-            } else {
-                timer.throttle("black_player_time", 100, function () {
-                    black_player_time = spriteutils.roundWithPrecision(black_player_time - 0.1, 1)
-                })
-            }
-        } else {
-            if (white_player_time > 60) {
-                timer.throttle("white_player_time", 1000, function () {
-                    white_player_time += -1
-                })
-            } else {
-                timer.throttle("white_player_time", 100, function () {
-                    white_player_time = spriteutils.roundWithPrecision(white_player_time - 0.1, 1)
-                })
-            }
-        }
+        pause(100)
     }
 })
