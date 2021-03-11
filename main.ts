@@ -193,57 +193,61 @@ function create_buttons () {
     sprite_edit_button.left = 106
 }
 controller.A.onEvent(ControllerButtonEvent.Pressed, function () {
-    if (sprite_cursor_pointer.overlapsWith(sprite_go_button)) {
-        lock_chessboard = false
-        game_started = true
-        sprite_go_button.destroy()
-        sprite_edit_button.destroy()
-    } else if (sprite_cursor_pointer.overlapsWith(sprite_edit_button)) {
-    	
-    } else if (game_started) {
-        if (!(lock_chessboard)) {
-            if (!(selected_piece)) {
-                pieces_clicked = grid.getSprites(tiles.locationOfSprite(sprite_cursor_pointer))
-                if (pieces_clicked.length > 0) {
-                    if (sprites.readDataBoolean(pieces_clicked[0], "color") == active_player) {
-                        sprite_selected_piece = pieces_clicked[0]
-                        valid_spots = get_valid_spots(sprite_selected_piece, false)
-                        show_valid_spots()
-                        if (sprites.readDataString(sprite_selected_piece, "type") == "king") {
-                            grid.remove(sprite_selected_piece)
-                            highlight_all_attacked_tiles(sprite_selected_piece, sprites.readDataBoolean(sprite_selected_piece, "color"))
-                            grid.snap(sprite_selected_piece)
-                            reset_attacked_tiles()
+    if (!(disable_a)) {
+        if (sprite_cursor_pointer.overlapsWith(sprite_go_button)) {
+            lock_chessboard = false
+            game_started = true
+            sprite_go_button.destroy()
+            sprite_edit_button.destroy()
+        } else if (sprite_cursor_pointer.overlapsWith(sprite_edit_button)) {
+            edit_menu()
+        } else if (game_started) {
+            if (!(lock_chessboard)) {
+                if (!(selected_piece)) {
+                    pieces_clicked = grid.getSprites(tiles.locationOfSprite(sprite_cursor_pointer))
+                    if (pieces_clicked.length > 0) {
+                        if (sprites.readDataBoolean(pieces_clicked[0], "color") == active_player) {
+                            sprite_selected_piece = pieces_clicked[0]
+                            valid_spots = get_valid_spots(sprite_selected_piece, false)
+                            show_valid_spots()
+                            if (sprites.readDataString(sprite_selected_piece, "type") == "king") {
+                                grid.remove(sprite_selected_piece)
+                                highlight_all_attacked_tiles(sprite_selected_piece, sprites.readDataBoolean(sprite_selected_piece, "color"))
+                                grid.snap(sprite_selected_piece)
+                                reset_attacked_tiles()
+                            }
+                            sprite_text_moves_found.setText("Moves found: " + number_of_valid_spots())
+                            if (number_of_valid_spots() == 0) {
+                                sprite_text_moves_found.image.replace(15, 2)
+                            }
+                            selected_piece = true
+                        } else {
+                            scene.cameraShake(4, 200)
                         }
-                        sprite_text_moves_found.setText("Moves found: " + number_of_valid_spots())
-                        if (number_of_valid_spots() == 0) {
-                            sprite_text_moves_found.image.replace(15, 2)
-                        }
-                        selected_piece = true
-                    } else {
-                        scene.cameraShake(4, 200)
                     }
-                }
-            } else {
-                if (sprite_selected_piece) {
-                    if (tiles.tileIs(tiles.locationOfSprite(sprite_cursor_pointer), assets.tile`green_tile_on_dark`) || tiles.tileIs(tiles.locationOfSprite(sprite_cursor_pointer), assets.tile`green_tile_on_light`)) {
-                        if (grid.getSprites(tiles.locationOfSprite(sprite_cursor_pointer)).length > 0) {
-                            grid.getSprites(tiles.locationOfSprite(sprite_cursor_pointer))[0].destroy()
+                } else {
+                    if (sprite_selected_piece) {
+                        if (tiles.tileIs(tiles.locationOfSprite(sprite_cursor_pointer), assets.tile`green_tile_on_dark`) || tiles.tileIs(tiles.locationOfSprite(sprite_cursor_pointer), assets.tile`green_tile_on_light`)) {
+                            if (grid.getSprites(tiles.locationOfSprite(sprite_cursor_pointer)).length > 0) {
+                                grid.getSprites(tiles.locationOfSprite(sprite_cursor_pointer))[0].destroy()
+                            }
+                            sprites.setDataBoolean(sprite_selected_piece, "moved", true)
+                            grid.place(sprite_selected_piece, tiles.locationOfSprite(sprite_cursor_pointer))
+                            active_player = !(active_player)
+                        } else {
+                            scene.cameraShake(4, 200)
                         }
-                        sprites.setDataBoolean(sprite_selected_piece, "moved", true)
-                        grid.place(sprite_selected_piece, tiles.locationOfSprite(sprite_cursor_pointer))
-                        active_player = !(active_player)
-                    } else {
-                        scene.cameraShake(4, 200)
+                        sprite_text_moves_found.setText("")
+                        make_tilemap(false)
                     }
-                    sprite_text_moves_found.setText("")
-                    make_tilemap(false)
+                    selected_piece = false
                 }
-                selected_piece = false
             }
+        } else if (blockMenu.isMenuOpen()) {
+        	
+        } else {
+            scene.cameraShake(4, 200)
         }
-    } else {
-        scene.cameraShake(4, 200)
     }
 })
 function get_valid_knight_spot (piece: Sprite) {
@@ -257,6 +261,23 @@ function get_valid_knight_spot (piece: Sprite) {
     check_location(piece, -1, 2)
     check_location(piece, -1, -2)
     return local_valid_spots
+}
+function edit_menu () {
+    enable_cursor(false)
+    blockMenu.showMenu(["Cancel", "Player time", "Clock style"], MenuStyle.List, MenuLocation.FullScreen)
+    wait_for_select()
+    if (blockMenu.selectedMenuIndex() == 0) {
+    	
+    } else if (blockMenu.selectedMenuIndex() == 1) {
+    	
+    } else if (blockMenu.selectedMenuIndex() == 2) {
+    	
+    }
+    enable_cursor(true)
+    disable_a = true
+    timer.after(100, function () {
+        disable_a = false
+    })
 }
 function show_valid_spots () {
     for (let location of valid_spots) {
@@ -395,6 +416,13 @@ function get_valid_queen_spot (piece: Sprite) {
     }
     return local_valid_spots
 }
+function wait_for_select () {
+    selected_menu = false
+    while (!(selected_menu)) {
+        pause(100)
+    }
+    blockMenu.closeMenu()
+}
 function make_piece (sprite: Sprite, col: number, row: number, _type: string, color: boolean) {
     grid.place(sprite, tiles.getTileLocation(col, row))
     sprites.setDataString(sprite, "type", _type)
@@ -409,10 +437,14 @@ function format_time (seconds: number) {
     local_formatted_time = "" + local_formatted_time + seconds % 60 + "s"
     return local_formatted_time
 }
+blockMenu.onMenuOptionSelected(function (option, index) {
+    selected_menu = true
+})
 function is_even (x: number) {
     return x % 2 == 0
 }
 let local_formatted_time = ""
+let selected_menu = false
 let local_valid_king_spots: tiles.Location[] = []
 let sprite_cursor: Sprite = null
 let pieces_clicked: Sprite[] = []
@@ -429,6 +461,7 @@ let sprite_text_player_label: TextSprite = null
 let local_other_piece: Sprite[] = []
 let local_valid_spots: tiles.Location[] = []
 let local_location: tiles.Location = null
+let disable_a = false
 let game_started = false
 let lock_chessboard = false
 let valid_spots: tiles.Location[] = []
@@ -443,8 +476,10 @@ sprite_selected_piece = null
 valid_spots = []
 lock_chessboard = true
 game_started = false
+disable_a = false
 make_cursor()
 scene.setBackgroundColor(13)
+blockMenu.setColors(1, 15)
 make_tilemap(true)
 make_pieces()
 make_tilemap(false)
