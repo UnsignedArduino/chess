@@ -188,12 +188,16 @@ function create_buttons () {
     sprite_go_button = sprites.create(assets.image`go_button`, SpriteKind.Text)
     sprite_go_button.top = 55
     sprite_go_button.left = 92
+    sprite_edit_button = sprites.create(assets.image`edit_button`, SpriteKind.Text)
+    sprite_edit_button.top = 55
+    sprite_edit_button.left = 106
 }
 controller.A.onEvent(ControllerButtonEvent.Pressed, function () {
     if (sprite_cursor_pointer.overlapsWith(sprite_go_button)) {
         lock_chessboard = false
         game_started = true
         sprite_go_button.destroy()
+        sprite_edit_button.destroy()
     } else if (game_started) {
         if (!(lock_chessboard)) {
             if (!(selected_piece)) {
@@ -411,6 +415,7 @@ let local_valid_king_spots: tiles.Location[] = []
 let sprite_cursor: Sprite = null
 let pieces_clicked: Sprite[] = []
 let sprite_cursor_pointer: Sprite = null
+let sprite_edit_button: Sprite = null
 let sprite_go_button: Sprite = null
 let sprite_text_moves_found: TextSprite = null
 let sprite_text_player_black_time: TextSprite = null

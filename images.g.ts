@@ -192,6 +192,18 @@ f f f f f f f f f f f f f
 . 1 1 1 1 1 . . . . f f . . . . 
 . . . . . . . . . . . . . . . . 
 `;
+            case "image18":
+            case "edit_button":return img`
+f f f f f f f f f f f f f f f f f f f 
+f 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 f 
+f 4 f f f 4 f f 4 4 f f f 4 f f f 4 f 
+f 4 f 4 4 4 f 4 f 4 4 f 4 4 4 f 4 4 f 
+f 4 f f f 4 f 4 f 4 4 f 4 4 4 f 4 4 f 
+f 4 f 4 4 4 f 4 f 4 4 f 4 4 4 f 4 4 f 
+f 4 f f f 4 f f 4 4 f f f 4 4 f 4 4 f 
+f 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 f 
+f f f f f f f f f f f f f f f f f f f 
+`;
         }
         return null;
     })

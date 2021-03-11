@@ -84,6 +84,11 @@
         "mimeType": "image/x-mkcd-f4",
         "displayName": "white_time_label"
     },
+    "image18": {
+        "data": "hwQTAAkAAAD/////DwAAAE9EREQPAAAAT///Tw8AAABPT09PDwAAAE9PT08PAAAAT0RERA8AAABP//9PDwAAAE9PRE8PAAAAT/T/RA8AAABPREREDwAAAE9PRE8PAAAAT///Tw8AAABPT0RPDwAAAE9EREQPAAAAT09ERA8AAABP//9PDwAAAE9PREQPAAAAT0RERA8AAAD/////DwAAAA==",
+        "mimeType": "image/x-mkcd-f4",
+        "displayName": "edit_button"
+    },
     "*": {
         "mimeType": "image/x-mkcd-f4",
         "dataEncoding": "base64",
