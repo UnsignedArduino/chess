@@ -84,17 +84,15 @@ function prepare_text () {
     sprite_text_current_player = textsprite.create("", 0, 15)
     sprite_text_current_player.top = sprite_text_player_label.bottom
     sprite_text_current_player.left = sprite_text_player_label.left + 1
-    sprite_text_white_time_label = textsprite.create(": ", 0, 15)
+    sprite_text_white_time_label = sprites.create(assets.image`white_time_label`, SpriteKind.Text)
     sprite_text_white_time_label.top = 34
     sprite_text_white_time_label.left = sprite_text_current_player.left
-    sprite_text_white_time_label.setIcon(assets.image`white_knight`)
     sprite_text_white_player_time = textsprite.create("", 0, 15)
     sprite_text_white_player_time.top = 34
     sprite_text_white_player_time.left = sprite_text_white_time_label.right
-    sprite_text_black_time_label = textsprite.create(": ", 0, 15)
+    sprite_text_black_time_label = sprites.create(assets.image`black_time_label`, SpriteKind.Text)
     sprite_text_black_time_label.top = 44
     sprite_text_black_time_label.left = sprite_text_current_player.left
-    sprite_text_black_time_label.setIcon(assets.image`black_knight`)
     sprite_text_player_black_time = textsprite.create("", 0, 15)
     sprite_text_player_black_time.top = 44
     sprite_text_player_black_time.left = sprite_text_black_time_label.right
@@ -196,9 +194,6 @@ controller.A.onEvent(ControllerButtonEvent.Pressed, function () {
         lock_chessboard = false
         game_started = true
         sprite_go_button.destroy()
-        for (let sprite of sprites.allOfKind(SpriteKind.Text)) {
-            sprite.setFlag(SpriteFlag.GhostThroughSprites, true)
-        }
     } else if (game_started) {
         if (!(lock_chessboard)) {
             if (!(selected_piece)) {
@@ -421,7 +416,7 @@ let sprite_text_moves_found: TextSprite = null
 let sprite_text_player_black_time: TextSprite = null
 let sprite_text_black_time_label: Sprite = null
 let sprite_text_white_player_time: TextSprite = null
-let sprite_text_white_time_label: TextSprite = null
+let sprite_text_white_time_label: Sprite = null
 let sprite_text_current_player: TextSprite = null
 let sprite_text_player_label: TextSprite = null
 let local_other_piece: Sprite[] = []

@@ -74,6 +74,16 @@
         "mimeType": "image/x-mkcd-f4",
         "displayName": "go_button"
     },
+    "image16": {
+        "data": "hwQQAAgAAAAAAAAAAA8ADwD/8A/w//8P8P//D/D//w8A8A8AAAAAAAAAAAAAAAAAAP/wDwD/8A8AAAAAAAAAAAAAAAAAAAAA",
+        "mimeType": "image/x-mkcd-f4",
+        "displayName": "black_time_label"
+    },
+    "image17": {
+        "data": "hwQQAAgAAAAAAAAAAAEAAQAREAEQEREBEBERARAREQEAEAEAAAAAAAAAAAAAAAAAAP/wDwD/8A8AAAAAAAAAAAAAAAAAAAAA",
+        "mimeType": "image/x-mkcd-f4",
+        "displayName": "white_time_label"
+    },
     "*": {
         "mimeType": "image/x-mkcd-f4",
         "dataEncoding": "base64",

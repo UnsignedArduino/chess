@@ -170,6 +170,28 @@ f 7 7 f f 7 7 7 f f 7 7 f
 f 7 7 7 7 7 7 7 7 7 7 7 f 
 f f f f f f f f f f f f f 
 `;
+            case "image16":
+            case "black_time_label":return img`
+. . . . . . . . . . . . . . . . 
+. . . f f f . . . . . . . . . . 
+. f f f f f . . . . f f . . . . 
+. . f f f f f . . . f f . . . . 
+. . . f f f f . . . . . . . . . 
+. . f f f f . . . . f f . . . . 
+. f f f f f . . . . f f . . . . 
+. . . . . . . . . . . . . . . . 
+`;
+            case "image17":
+            case "white_time_label":return img`
+. . . . . . . . . . . . . . . . 
+. . . 1 1 1 . . . . . . . . . . 
+. 1 1 1 1 1 . . . . f f . . . . 
+. . 1 1 1 1 1 . . . f f . . . . 
+. . . 1 1 1 1 . . . . . . . . . 
+. . 1 1 1 1 . . . . f f . . . . 
+. 1 1 1 1 1 . . . . f f . . . . 
+. . . . . . . . . . . . . . . . 
+`;
         }
         return null;
     })
