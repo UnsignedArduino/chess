@@ -198,6 +198,8 @@ controller.A.onEvent(ControllerButtonEvent.Pressed, function () {
         game_started = true
         sprite_go_button.destroy()
         sprite_edit_button.destroy()
+    } else if (sprite_cursor_pointer.overlapsWith(sprite_edit_button)) {
+    	
     } else if (game_started) {
         if (!(lock_chessboard)) {
             if (!(selected_piece)) {
