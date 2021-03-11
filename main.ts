@@ -62,6 +62,48 @@ function get_valid_pawn_spot (piece: Sprite, attack_only: boolean) {
     }
     return local_valid_spots
 }
+function ask_for_time () {
+    local_seconds = 0
+    while (true) {
+        local_result = game.askForNumber("Please input how many minutes:", 2)
+        if (local_result == local_result) {
+            if (local_result == Math.round(local_result)) {
+                if (local_result >= 0) {
+                    break;
+                } else {
+                    game.showLongText("Cannot be negative! Try again.", DialogLayout.Center)
+                }
+            } else {
+                game.showLongText("Cannot be a decimal! Try again.", DialogLayout.Center)
+            }
+        } else {
+            game.showLongText("Not a valid number! Try again.", DialogLayout.Center)
+        }
+    }
+    local_seconds = local_result * 60
+    while (true) {
+        local_result = game.askForNumber("Please input how many seconds:", 2)
+        if (local_result == local_result) {
+            if (local_result == Math.round(local_result)) {
+                if (local_result >= 0) {
+                    if (local_result <= 60) {
+                        break;
+                    } else {
+                        game.showLongText("Cannot be greater than 60! Try again.", DialogLayout.Center)
+                    }
+                } else {
+                    game.showLongText("Cannot be negative! Try again.", DialogLayout.Center)
+                }
+            } else {
+                game.showLongText("Cannot be a decimal! Try again.", DialogLayout.Center)
+            }
+        } else {
+            game.showLongText("Not a valid number! Try again.", DialogLayout.Center)
+        }
+    }
+    local_seconds += local_result
+    return local_seconds
+}
 function highlight_all_attacked_tiles (piece: Sprite, color: boolean) {
     for (let sprite_piece of sprites.allOfKind(SpriteKind.Piece)) {
         if (sprites.readDataBoolean(sprite_piece, "color") == color) {
@@ -264,14 +306,14 @@ function get_valid_knight_spot (piece: Sprite) {
 }
 function edit_menu () {
     enable_cursor(false)
-    blockMenu.showMenu(["Cancel", "Player time", "Clock style"], MenuStyle.List, MenuLocation.FullScreen)
+    blockMenu.showMenu(["Cancel", "White player time", "Black player time"], MenuStyle.List, MenuLocation.FullScreen)
     wait_for_select()
     if (blockMenu.selectedMenuIndex() == 0) {
     	
     } else if (blockMenu.selectedMenuIndex() == 1) {
-    	
+        white_player_time = ask_for_time()
     } else if (blockMenu.selectedMenuIndex() == 2) {
-    	
+        black_player_time = ask_for_time()
     }
     enable_cursor(true)
     disable_a = true
@@ -458,6 +500,8 @@ let sprite_text_white_player_time: TextSprite = null
 let sprite_text_white_time_label: Sprite = null
 let sprite_text_current_player: TextSprite = null
 let sprite_text_player_label: TextSprite = null
+let local_result = 0
+let local_seconds = 0
 let local_other_piece: Sprite[] = []
 let local_valid_spots: tiles.Location[] = []
 let local_location: tiles.Location = null
@@ -467,10 +511,12 @@ let lock_chessboard = false
 let valid_spots: tiles.Location[] = []
 let sprite_selected_piece: Sprite = null
 let selected_piece = false
+let black_player_time = 0
+let white_player_time = 0
 let active_player = false
 active_player = false
-let white_player_time = 120
-let black_player_time = 120
+white_player_time = 120
+black_player_time = 120
 selected_piece = false
 sprite_selected_piece = null
 valid_spots = []
