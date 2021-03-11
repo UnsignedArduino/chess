@@ -419,7 +419,7 @@ let sprite_cursor_pointer: Sprite = null
 let sprite_go_button: Sprite = null
 let sprite_text_moves_found: TextSprite = null
 let sprite_text_player_black_time: TextSprite = null
-let sprite_text_black_time_label: TextSprite = null
+let sprite_text_black_time_label: Sprite = null
 let sprite_text_white_player_time: TextSprite = null
 let sprite_text_white_time_label: TextSprite = null
 let sprite_text_current_player: TextSprite = null
@@ -474,6 +474,17 @@ forever(function () {
         } else {
             sprite_text_white_player_time.image.replace(15, 4)
         }
+    }
+    if (active_player) {
+        sprite_text_black_time_label.top = 34
+        sprite_text_player_black_time.top = 34
+        sprite_text_white_time_label.top = 44
+        sprite_text_white_player_time.top = 44
+    } else {
+        sprite_text_black_time_label.top = 44
+        sprite_text_player_black_time.top = 44
+        sprite_text_white_time_label.top = 34
+        sprite_text_white_player_time.top = 34
     }
     pause(100)
 })
