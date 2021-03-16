@@ -141,6 +141,9 @@ function prepare_text () {
     sprite_text_moves_found = textsprite.create("", 0, 15)
     sprite_text_moves_found.left = 16
     sprite_text_moves_found.top = 90
+    sprite_text_checked_king = textsprite.create("", 0, 15)
+    sprite_text_checked_king.left = 16
+    sprite_text_checked_king.top = 100
 }
 controller.B.onEvent(ControllerButtonEvent.Pressed, function () {
     if (!(lock_chessboard)) {
@@ -149,6 +152,19 @@ controller.B.onEvent(ControllerButtonEvent.Pressed, function () {
         make_tilemap(false)
     }
 })
+function update_checked () {
+    highlight_all_attacked_tiles(sprite_selected_piece, sprites.readDataBoolean(sprite_selected_piece, "color"))
+    black_checked = is_on_attacked(get_king_of_color(true))
+    white_checked = is_on_attacked(get_king_of_color(false))
+    reset_attacked_tiles()
+    if (black_checked) {
+        sprite_text_checked_king.setText("Black is in check!")
+    } else if (white_checked) {
+        sprite_text_checked_king.setText("White is in check!")
+    } else {
+        sprite_text_checked_king.setText("")
+    }
+}
 function get_valid_bishop_spot (piece: Sprite) {
     local_valid_spots = []
     for (let index = 0; index <= 7; index++) {
@@ -250,6 +266,7 @@ controller.A.onEvent(ControllerButtonEvent.Pressed, function () {
                     if (pieces_clicked.length > 0) {
                         if (sprites.readDataBoolean(pieces_clicked[0], "color") == active_player) {
                             sprite_selected_piece = pieces_clicked[0]
+                            update_checked()
                             valid_spots = get_valid_spots(sprite_selected_piece, false)
                             show_valid_spots()
                             if (sprites.readDataString(sprite_selected_piece, "type") == "king") {
@@ -366,15 +383,28 @@ function reset_attacked_tiles () {
         }
     }
 }
+function get_king_of_color (color: boolean) {
+    for (let sprite_piece of sprites.allOfKind(SpriteKind.Piece)) {
+        if (sprites.readDataBoolean(sprite_piece, "color") == color) {
+            if (sprites.readDataString(sprite_piece, "type") == "king") {
+                return sprite_piece
+            }
+        }
+    }
+    return [][0]
+}
 function number_of_valid_spots () {
     return tiles.getTilesByType(assets.tile`green_tile_on_dark`).length + tiles.getTilesByType(assets.tile`green_tile_on_light`).length
 }
 function make_tilemap (with_piece_tiles: boolean) {
     if (with_piece_tiles) {
-        tiles.setSmallTilemap(tilemap`board_with_tile_pieces`)
+        tiles.setSmallTilemap(tilemap`board_for_test`)
     } else {
         tiles.setSmallTilemap(tilemap`board`)
     }
+}
+function is_on_attacked (piece: Sprite) {
+    return piece.tileKindAt(TileDirection.Center, assets.tile`red_tile`)
 }
 function within (x: number, minimum: number, maximum: number, inclusive: boolean) {
     if (inclusive) {
@@ -493,6 +523,7 @@ let pieces_clicked: Sprite[] = []
 let sprite_cursor_pointer: Sprite = null
 let sprite_edit_button: Sprite = null
 let sprite_go_button: Sprite = null
+let sprite_text_checked_king: TextSprite = null
 let sprite_text_moves_found: TextSprite = null
 let sprite_text_player_black_time: TextSprite = null
 let sprite_text_black_time_label: Sprite = null
@@ -505,6 +536,8 @@ let local_seconds = 0
 let local_other_piece: Sprite[] = []
 let local_valid_spots: tiles.Location[] = []
 let local_location: tiles.Location = null
+let black_checked = false
+let white_checked = false
 let disable_a = false
 let game_started = false
 let lock_chessboard = false
@@ -523,6 +556,10 @@ valid_spots = []
 lock_chessboard = true
 game_started = false
 disable_a = false
+white_checked = false
+black_checked = false
+let white_checkmated = false
+let black_checkmated = false
 make_cursor()
 scene.setBackgroundColor(13)
 blockMenu.setColors(1, 15)
