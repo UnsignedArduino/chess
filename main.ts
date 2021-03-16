@@ -104,13 +104,15 @@ function ask_for_time () {
     local_seconds += local_result
     return local_seconds
 }
-function highlight_all_attacked_tiles (piece: Sprite, color: boolean) {
+function highlight_all_attacked_tiles (piece: Sprite, color: boolean, check_for_same: boolean) {
     for (let sprite_piece of sprites.allOfKind(SpriteKind.Piece)) {
-        if (sprites.readDataBoolean(sprite_piece, "color") == color) {
-            continue;
-        }
-        if (sprites.readDataString(piece, "type") == sprites.readDataString(sprite_piece, "type")) {
-            continue;
+        if (check_for_same) {
+            if (sprites.readDataBoolean(sprite_piece, "color") == color) {
+                continue;
+            }
+            if (sprites.readDataString(piece, "type") == sprites.readDataString(sprite_piece, "type")) {
+                continue;
+            }
         }
         for (let location of get_valid_spots(sprite_piece, true)) {
             if (within(tiles.locationXY(location, tiles.XY.row), 2, 9, true) && within(tiles.locationXY(location, tiles.XY.column), 2, 9, true)) {
@@ -153,7 +155,7 @@ controller.B.onEvent(ControllerButtonEvent.Pressed, function () {
     }
 })
 function update_checked () {
-    highlight_all_attacked_tiles(sprite_selected_piece, sprites.readDataBoolean(sprite_selected_piece, "color"))
+    highlight_all_attacked_tiles(sprite_selected_piece, sprites.readDataBoolean(sprite_selected_piece, "color"), false)
     black_checked = is_on_attacked(get_king_of_color(true))
     white_checked = is_on_attacked(get_king_of_color(false))
     reset_attacked_tiles()
@@ -271,7 +273,7 @@ controller.A.onEvent(ControllerButtonEvent.Pressed, function () {
                             show_valid_spots()
                             if (sprites.readDataString(sprite_selected_piece, "type") == "king") {
                                 grid.remove(sprite_selected_piece)
-                                highlight_all_attacked_tiles(sprite_selected_piece, sprites.readDataBoolean(sprite_selected_piece, "color"))
+                                highlight_all_attacked_tiles(sprite_selected_piece, sprites.readDataBoolean(sprite_selected_piece, "color"), true)
                                 grid.snap(sprite_selected_piece)
                                 reset_attacked_tiles()
                             }
