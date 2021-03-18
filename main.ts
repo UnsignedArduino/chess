@@ -295,6 +295,7 @@ controller.A.onEvent(ControllerButtonEvent.Pressed, function () {
                             sprites.setDataBoolean(sprite_selected_piece, "moved", true)
                             grid.place(sprite_selected_piece, tiles.locationOfSprite(sprite_cursor_pointer))
                             active_player = !(active_player)
+                            update_checked()
                         } else {
                             scene.cameraShake(4, 200)
                         }
