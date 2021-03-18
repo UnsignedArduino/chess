@@ -377,6 +377,18 @@ function get_valid_king_spot (piece: Sprite) {
     }
     return local_valid_king_spots
 }
+function would_help_king (piece: Sprite, d_cols: number, d_rows: number) {
+    grid.move(piece, d_cols, d_rows)
+    update_checked()
+    if (sprites.readDataBoolean(piece, "color")) {
+        local_helps_king = black_checked
+    } else {
+        local_helps_king = white_checked
+    }
+    grid.move(piece, d_cols * -1, d_rows * -1)
+    update_checked()
+    return local_helps_king
+}
 function reset_attacked_tiles () {
     for (let location of tiles.getTilesByType(assets.tile`red_tile`)) {
         if (is_even(tiles.locationXY(location, tiles.XY.column) + tiles.locationXY(location, tiles.XY.row))) {
@@ -520,6 +532,7 @@ function is_even (x: number) {
 }
 let local_formatted_time = ""
 let selected_menu = false
+let local_helps_king = false
 let local_valid_king_spots: tiles.Location[] = []
 let sprite_cursor: Sprite = null
 let pieces_clicked: Sprite[] = []
