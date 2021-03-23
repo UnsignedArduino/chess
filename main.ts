@@ -398,16 +398,15 @@ function would_help_king (piece: Sprite, d_cols: number, d_rows: number) {
     if (!(black_checked) && !(white_checked)) {
         return true
     }
+    local_original_location = grid.getLocation(piece)
     grid.move(piece, d_cols, d_rows)
-    pause(100)
     update_checked(false)
     if (sprites.readDataBoolean(piece, "color")) {
         local_helps_king = !(black_checked)
     } else {
         local_helps_king = !(white_checked)
     }
-    grid.move(piece, d_cols * -1, d_rows * -1)
-    pause(100)
+    grid.place(piece, local_original_location)
     update_checked(false)
     return local_helps_king
 }
@@ -555,6 +554,7 @@ function is_even (x: number) {
 let local_formatted_time = ""
 let selected_menu = false
 let local_helps_king = false
+let local_original_location: tiles.Location = null
 let local_valid_king_spots: tiles.Location[] = []
 let sprite_cursor: Sprite = null
 let pieces_clicked: Sprite[] = []
