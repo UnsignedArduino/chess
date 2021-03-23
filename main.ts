@@ -1,22 +1,22 @@
 namespace SpriteKind {
     export const Piece = SpriteKind.create()
 }
-function check_location (piece: Sprite, d_col: number, d_row: number, exclude_king_check: boolean) {
+function check_location (piece: Sprite, d_col: number, d_row: number, include_king_check: boolean) {
     local_location = grid.add(grid.getLocation(piece), d_col, d_row)
     if (grid.getSprites(local_location).length == 0) {
-        if (exclude_king_check || would_help_king(piece, d_col, d_row)) {
+        if (!(include_king_check) || would_help_king(piece, d_col, d_row)) {
             local_valid_spots.push(grid.add(grid.getLocation(piece), d_col, d_row))
             return true
         }
     } else if (sprites.readDataBoolean(grid.getSprites(local_location)[0], "color") != sprites.readDataBoolean(piece, "color")) {
-        if (exclude_king_check || would_help_king(piece, d_col, d_row)) {
+        if (!(include_king_check) || would_help_king(piece, d_col, d_row)) {
             local_valid_spots.push(grid.add(grid.getLocation(piece), d_col, d_row))
             return false
         }
     }
     return false
 }
-function get_valid_pawn_spot (piece: Sprite, attack_only: boolean, exclude_king_check: boolean) {
+function get_valid_pawn_spot (piece: Sprite, attack_only: boolean, include_king_check: boolean) {
     local_valid_spots = []
     if (sprites.readDataBoolean(piece, "color")) {
         if (attack_only) {
@@ -24,24 +24,24 @@ function get_valid_pawn_spot (piece: Sprite, attack_only: boolean, exclude_king_
             local_valid_spots.push(grid.add(grid.getLocation(piece), 1, 1))
         } else {
             if (grid.getSprites(tiles.getTileLocation(grid.spriteCol(piece), grid.spriteRow(piece) + 1)).length == 0) {
-                if (exclude_king_check || would_help_king(piece, 0, 1)) {
+                if (include_king_check || would_help_king(piece, 0, 1)) {
                     local_valid_spots.push(grid.add(grid.getLocation(piece), 0, 1))
                 }
                 if (!(sprites.readDataBoolean(piece, "moved"))) {
-                    if (exclude_king_check || would_help_king(piece, 0, 2)) {
+                    if (include_king_check || would_help_king(piece, 0, 2)) {
                         local_valid_spots.push(grid.add(grid.getLocation(piece), 0, 2))
                     }
                 }
             }
             local_other_piece = grid.getSprites(tiles.getTileLocation(grid.spriteCol(piece) - 1, grid.spriteRow(piece) + 1))
             if (local_other_piece.length > 0 && !(sprites.readDataBoolean(local_other_piece[0], "color"))) {
-                if (exclude_king_check || would_help_king(piece, -1, 1)) {
+                if (include_king_check || would_help_king(piece, -1, 1)) {
                     local_valid_spots.push(grid.add(grid.getLocation(piece), -1, 1))
                 }
             }
             local_other_piece = grid.getSprites(tiles.getTileLocation(grid.spriteCol(piece) + 1, grid.spriteRow(piece) + 1))
             if (local_other_piece.length > 0 && !(sprites.readDataBoolean(local_other_piece[0], "color"))) {
-                if (exclude_king_check || would_help_king(piece, 1, 1)) {
+                if (include_king_check || would_help_king(piece, 1, 1)) {
                     local_valid_spots.push(grid.add(grid.getLocation(piece), 1, 1))
                 }
             }
@@ -52,12 +52,12 @@ function get_valid_pawn_spot (piece: Sprite, attack_only: boolean, exclude_king_
             local_valid_spots.push(grid.add(grid.getLocation(piece), 1, -1))
         } else {
             if (grid.getSprites(tiles.getTileLocation(grid.spriteCol(piece), grid.spriteRow(piece) - 1)).length == 0) {
-                if (exclude_king_check || would_help_king(piece, 0, -1)) {
+                if (include_king_check || would_help_king(piece, 0, -1)) {
                     local_valid_spots.push(grid.add(grid.getLocation(piece), 0, -1))
                 }
                 if (!(sprites.readDataBoolean(piece, "moved"))) {
                     if (grid.getSprites(tiles.getTileLocation(grid.spriteCol(piece), grid.spriteRow(piece) - 2)).length == 0) {
-                        if (exclude_king_check || would_help_king(piece, 0, -2)) {
+                        if (include_king_check || would_help_king(piece, 0, -2)) {
                             local_valid_spots.push(grid.add(grid.getLocation(piece), 0, -2))
                         }
                     }
@@ -65,13 +65,13 @@ function get_valid_pawn_spot (piece: Sprite, attack_only: boolean, exclude_king_
             }
             local_other_piece = grid.getSprites(tiles.getTileLocation(grid.spriteCol(piece) - 1, grid.spriteRow(piece) - 1))
             if (local_other_piece.length > 0 && sprites.readDataBoolean(local_other_piece[0], "color")) {
-                if (exclude_king_check || would_help_king(piece, -1, -1)) {
+                if (include_king_check || would_help_king(piece, -1, -1)) {
                     local_valid_spots.push(grid.add(grid.getLocation(piece), -1, -1))
                 }
             }
             local_other_piece = grid.getSprites(tiles.getTileLocation(grid.spriteCol(piece) + 1, grid.spriteRow(piece) - 1))
             if (local_other_piece.length > 0 && sprites.readDataBoolean(local_other_piece[0], "color")) {
-                if (exclude_king_check || would_help_king(piece, 1, -1)) {
+                if (include_king_check || would_help_king(piece, 1, -1)) {
                     local_valid_spots.push(grid.add(grid.getLocation(piece), 1, -1))
                 }
             }
@@ -121,7 +121,7 @@ function ask_for_time () {
     local_seconds += local_result
     return local_seconds
 }
-function highlight_all_attacked_tiles (piece: Sprite, color: boolean, check_for_same: boolean, exclude_king_check: boolean) {
+function highlight_all_attacked_tiles (piece: Sprite, color: boolean, check_for_same: boolean, include_king_check: boolean) {
     for (let sprite_piece of sprites.allOfKind(SpriteKind.Piece)) {
         if (check_for_same) {
             if (sprites.readDataBoolean(sprite_piece, "color") == color) {
@@ -131,7 +131,7 @@ function highlight_all_attacked_tiles (piece: Sprite, color: boolean, check_for_
                 continue;
             }
         }
-        for (let location of get_valid_spots(sprite_piece, true, exclude_king_check)) {
+        for (let location of get_valid_spots(sprite_piece, true, include_king_check)) {
             if (within(tiles.locationXY(location, tiles.XY.row), 2, 9, true) && within(tiles.locationXY(location, tiles.XY.column), 2, 9, true)) {
                 tiles.setTileAt(location, assets.tile`red_tile`)
             }
@@ -171,8 +171,8 @@ controller.B.onEvent(ControllerButtonEvent.Pressed, function () {
         make_tilemap(false)
     }
 })
-function update_checked (exclude_king_check: boolean) {
-    highlight_all_attacked_tiles(sprite_selected_piece, sprites.readDataBoolean(sprite_selected_piece, "color"), false, exclude_king_check)
+function update_checked (include_king_check: boolean) {
+    highlight_all_attacked_tiles(sprite_selected_piece, sprites.readDataBoolean(sprite_selected_piece, "color"), false, include_king_check)
     black_checked = is_on_attacked(get_king_of_color(true))
     white_checked = is_on_attacked(get_king_of_color(false))
     reset_attacked_tiles()
@@ -184,43 +184,43 @@ function update_checked (exclude_king_check: boolean) {
         sprite_text_checked_king.setText("")
     }
 }
-function get_valid_bishop_spot (piece: Sprite, exclude_king_check: boolean) {
+function get_valid_bishop_spot (piece: Sprite, include_king_check: boolean) {
     local_valid_spots = []
     for (let index = 0; index <= 7; index++) {
-        if (!(check_location(piece, (index + 1) * -1, (index + 1) * -1, exclude_king_check))) {
+        if (!(check_location(piece, (index + 1) * -1, (index + 1) * -1, include_king_check))) {
             break;
         }
     }
     for (let index = 0; index <= 7; index++) {
-        if (!(check_location(piece, index + 1, index + 1, exclude_king_check))) {
+        if (!(check_location(piece, index + 1, index + 1, include_king_check))) {
             break;
         }
     }
     for (let index = 0; index <= 7; index++) {
-        if (!(check_location(piece, (index + 1) * -1, index + 1, exclude_king_check))) {
+        if (!(check_location(piece, (index + 1) * -1, index + 1, include_king_check))) {
             break;
         }
     }
     for (let index = 0; index <= 7; index++) {
-        if (!(check_location(piece, index + 1, (index + 1) * -1, exclude_king_check))) {
+        if (!(check_location(piece, index + 1, (index + 1) * -1, include_king_check))) {
             break;
         }
     }
     return local_valid_spots
 }
-function get_valid_spots (piece: Sprite, attack_only: boolean, exclude_king_check: boolean) {
+function get_valid_spots (piece: Sprite, attack_only: boolean, include_king_check: boolean) {
     if (sprites.readDataString(piece, "type") == "rook") {
-        return get_valid_rook_spot(piece, exclude_king_check)
+        return get_valid_rook_spot(piece, include_king_check)
     } else if (sprites.readDataString(piece, "type") == "knight") {
-        return get_valid_knight_spot(piece, exclude_king_check)
+        return get_valid_knight_spot(piece, include_king_check)
     } else if (sprites.readDataString(piece, "type") == "bishop") {
-        return get_valid_bishop_spot(piece, exclude_king_check)
+        return get_valid_bishop_spot(piece, include_king_check)
     } else if (sprites.readDataString(piece, "type") == "king") {
-        return get_valid_king_spot(piece, exclude_king_check)
+        return get_valid_king_spot(piece, include_king_check)
     } else if (sprites.readDataString(piece, "type") == "queen") {
-        return get_valid_queen_spot(piece, exclude_king_check)
+        return get_valid_queen_spot(piece, include_king_check)
     } else {
-        return get_valid_pawn_spot(piece, attack_only, exclude_king_check)
+        return get_valid_pawn_spot(piece, attack_only, include_king_check)
     }
 }
 function make_pieces () {
@@ -329,16 +329,16 @@ controller.A.onEvent(ControllerButtonEvent.Pressed, function () {
         }
     }
 })
-function get_valid_knight_spot (piece: Sprite, exclude_king_check: boolean) {
+function get_valid_knight_spot (piece: Sprite, include_king_check: boolean) {
     local_valid_spots = []
-    check_location(piece, 2, 1, exclude_king_check)
-    check_location(piece, 2, -1, exclude_king_check)
-    check_location(piece, -2, 1, exclude_king_check)
-    check_location(piece, -2, -1, exclude_king_check)
-    check_location(piece, 1, 2, exclude_king_check)
-    check_location(piece, 1, -2, exclude_king_check)
-    check_location(piece, -1, 2, exclude_king_check)
-    check_location(piece, -1, -2, exclude_king_check)
+    check_location(piece, 2, 1, include_king_check)
+    check_location(piece, 2, -1, include_king_check)
+    check_location(piece, -2, 1, include_king_check)
+    check_location(piece, -2, -1, include_king_check)
+    check_location(piece, 1, 2, include_king_check)
+    check_location(piece, 1, -2, include_king_check)
+    check_location(piece, -1, 2, include_king_check)
+    check_location(piece, -1, -2, include_king_check)
     return local_valid_spots
 }
 function edit_menu () {
@@ -378,17 +378,17 @@ function make_cursor () {
     scene.cameraFollowSprite(sprite_cursor_pointer)
     enable_cursor(true)
 }
-function get_valid_king_spot (piece: Sprite, exclude_king_check: boolean) {
+function get_valid_king_spot (piece: Sprite, include_king_check: boolean) {
     local_valid_king_spots = []
     local_valid_spots = []
-    check_location(piece, 0, -1, exclude_king_check)
-    check_location(piece, 1, -1, exclude_king_check)
-    check_location(piece, 1, 0, exclude_king_check)
-    check_location(piece, 1, 1, exclude_king_check)
-    check_location(piece, 0, 1, exclude_king_check)
-    check_location(piece, -1, 1, exclude_king_check)
-    check_location(piece, -1, 0, exclude_king_check)
-    check_location(piece, -1, -1, exclude_king_check)
+    check_location(piece, 0, -1, include_king_check)
+    check_location(piece, 1, -1, include_king_check)
+    check_location(piece, 1, 0, include_king_check)
+    check_location(piece, 1, 1, include_king_check)
+    check_location(piece, 0, 1, include_king_check)
+    check_location(piece, -1, 1, include_king_check)
+    check_location(piece, -1, 0, include_king_check)
+    check_location(piece, -1, -1, include_king_check)
     for (let sprite of local_valid_spots) {
         local_valid_king_spots.push(sprite)
     }
@@ -457,69 +457,69 @@ function enable_cursor (enable: boolean) {
         controller.moveSprite(sprite_cursor_pointer, 0, 0)
     }
 }
-function get_valid_rook_spot (piece: Sprite, exclude_king_check: boolean) {
+function get_valid_rook_spot (piece: Sprite, include_king_check: boolean) {
     local_valid_spots = []
     for (let index = 0; index <= 7; index++) {
-        if (!(check_location(piece, 0, (index + 1) * -1, exclude_king_check))) {
+        if (!(check_location(piece, 0, (index + 1) * -1, include_king_check))) {
             break;
         }
     }
     for (let index = 0; index <= 7; index++) {
-        if (!(check_location(piece, 0, index + 1, exclude_king_check))) {
+        if (!(check_location(piece, 0, index + 1, include_king_check))) {
             break;
         }
     }
     for (let index = 0; index <= 7; index++) {
-        if (!(check_location(piece, (index + 1) * -1, 0, exclude_king_check))) {
+        if (!(check_location(piece, (index + 1) * -1, 0, include_king_check))) {
             break;
         }
     }
     for (let index = 0; index <= 7; index++) {
-        if (!(check_location(piece, index + 1, 0, exclude_king_check))) {
+        if (!(check_location(piece, index + 1, 0, include_king_check))) {
             break;
         }
     }
     return local_valid_spots
 }
-function get_valid_queen_spot (piece: Sprite, exclude_king_check: boolean) {
+function get_valid_queen_spot (piece: Sprite, include_king_check: boolean) {
     local_valid_spots = []
     for (let index = 0; index <= 7; index++) {
-        if (!(check_location(piece, 0, (index + 1) * -1, exclude_king_check))) {
+        if (!(check_location(piece, 0, (index + 1) * -1, include_king_check))) {
             break;
         }
     }
     for (let index = 0; index <= 7; index++) {
-        if (!(check_location(piece, 0, index + 1, exclude_king_check))) {
+        if (!(check_location(piece, 0, index + 1, include_king_check))) {
             break;
         }
     }
     for (let index = 0; index <= 7; index++) {
-        if (!(check_location(piece, (index + 1) * -1, 0, exclude_king_check))) {
+        if (!(check_location(piece, (index + 1) * -1, 0, include_king_check))) {
             break;
         }
     }
     for (let index = 0; index <= 7; index++) {
-        if (!(check_location(piece, index + 1, 0, exclude_king_check))) {
+        if (!(check_location(piece, index + 1, 0, include_king_check))) {
             break;
         }
     }
     for (let index = 0; index <= 7; index++) {
-        if (!(check_location(piece, (index + 1) * -1, (index + 1) * -1, exclude_king_check))) {
+        if (!(check_location(piece, (index + 1) * -1, (index + 1) * -1, include_king_check))) {
             break;
         }
     }
     for (let index = 0; index <= 7; index++) {
-        if (!(check_location(piece, index + 1, index + 1, exclude_king_check))) {
+        if (!(check_location(piece, index + 1, index + 1, include_king_check))) {
             break;
         }
     }
     for (let index = 0; index <= 7; index++) {
-        if (!(check_location(piece, (index + 1) * -1, index + 1, exclude_king_check))) {
+        if (!(check_location(piece, (index + 1) * -1, index + 1, include_king_check))) {
             break;
         }
     }
     for (let index = 0; index <= 7; index++) {
-        if (!(check_location(piece, index + 1, (index + 1) * -1, exclude_king_check))) {
+        if (!(check_location(piece, index + 1, (index + 1) * -1, include_king_check))) {
             break;
         }
     }
